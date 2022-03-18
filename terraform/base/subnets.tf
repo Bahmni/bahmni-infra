@@ -1,6 +1,6 @@
 resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.Bahmni-vpc.id
-  availability_zone       = var.region
+  availability_zone       = var.availability_zone
   cidr_block              = "10.0.0.0/24"
   map_public_ip_on_launch = true
 
