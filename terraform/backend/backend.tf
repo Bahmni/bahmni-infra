@@ -17,10 +17,12 @@ resource "aws_s3_bucket_acl" "access" {
 }
 
 resource "aws_dynamodb_table" "terraform_lock" {
-  hash_key = "lockId"
-  name     = "bahmni-tf-lock"
+  hash_key       = "LockID"
+  name           = "bahmni-tf-lock"
+  write_capacity = 1
+  read_capacity  = 1
   attribute {
-    name = "lockId"
+    name = "LockID"
     type = "S"
   }
   tags = {
