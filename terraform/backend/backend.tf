@@ -26,7 +26,7 @@ resource "aws_dynamodb_table" "terraform_lock" {
     type = "S"
   }
   tags = {
-    name  = "bahmni-tf-lock"
+    Name  = "bahmni-tf-lock"
     owner = "bahmni-infra"
   }
 }
