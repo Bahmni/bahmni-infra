@@ -8,6 +8,18 @@
         aws access key : *******
         aws secret key : ******
 ```       
+### Development Setup
+This is a one-time setup that needs to be run when you clone the repo.
+1. Install [pre-commit](https://pre-commit.com/#install)
+
+        pip install pre-commit 
+        (or)
+        brew install pre-commit
+2. Initialise pre-commit hooks
+        
+        pre-commit install --install-hooks
+
+Now before every commit, the hooks will be executed.
 ## Backend Creation
 Ignore if already exists
 
