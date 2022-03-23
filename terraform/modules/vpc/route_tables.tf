@@ -1,5 +1,5 @@
 resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.Bahmni-vpc.id
+  vpc_id = aws_vpc.bahmni-vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -7,7 +7,8 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name = "bahmni-route-table-id"
+    Name  = "bahmni-rt-${var.vpc_suffix}"
+    owner = var.owner
   }
 }
 
