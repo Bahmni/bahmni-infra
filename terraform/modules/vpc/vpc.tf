@@ -1,5 +1,5 @@
 resource "aws_vpc" "bahmni-vpc" {
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = var.vpc_cidr_block
   enable_dns_support   = true
   enable_dns_hostnames = true
   instance_tenancy     = "default"
@@ -18,21 +18,40 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-resource "aws_eip" "nat_eip" {
+resource "aws_eip" "nat_eip_az_a" {
   vpc        = true
   depends_on = [aws_internet_gateway.igw]
   tags = {
-    Name  = "bahmni-nat-eip-${var.vpc_suffix}"
+    Name  = "bahmni-nat-eip-az-a-${var.vpc_suffix}"
     owner = var.owner
   }
 }
 
-resource "aws_nat_gateway" "nat_gw" {
-  allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.public.id
+resource "aws_eip" "nat_eip_az_b" {
+  vpc        = true
+  depends_on = [aws_internet_gateway.igw]
+  tags = {
+    Name  = "bahmni-nat-eip-az-b-${var.vpc_suffix}"
+    owner = var.owner
+  }
+}
+
+resource "aws_nat_gateway" "nat_az_a" {
+  allocation_id = aws_eip.nat_eip_az_a.id
+  subnet_id     = aws_subnet.private_a.id
 
   tags = {
-    Name  = "bahmni-nat-gateway-${var.vpc_suffix}"
+    Name  = "bahmni-nat-gateway-az-a-${var.vpc_suffix}"
+    owner = var.owner
+  }
+}
+
+resource "aws_nat_gateway" "nat_az_b" {
+  allocation_id = aws_eip.nat_eip_az_b.id
+  subnet_id     = aws_subnet.private_b.id
+
+  tags = {
+    Name  = "bahmni-nat-gateway-az-b-${var.vpc_suffix}"
     owner = var.owner
   }
 }

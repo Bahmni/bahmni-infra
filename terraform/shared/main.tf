@@ -12,8 +12,11 @@ terraform {
 }
 
 module "non-prod-vpc" {
-  source            = "../modules/vpc"
-  availability_zone = "ap-south-1a"
-  owner             = "bahmni-infra"
-  vpc_suffix        = "non-prod"
+  source              = "../modules/vpc"
+  vpc_suffix          = "non-prod"
+  availability_zones  = var.availability_zones
+  owner               = var.owner
+  private_cidr_blocks = var.private_cidr_blocks
+  public_cidr_blocks  = var.public_cidr_blocks
+  vpc_cidr_block      = var.vpc_cidr_block
 }

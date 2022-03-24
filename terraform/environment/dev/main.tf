@@ -10,3 +10,13 @@ terraform {
     dynamodb_table = "bahmni-tf-lock"
   }
 }
+
+locals {
+  environment = "dev"
+}
+
+module "dev-eks" {
+  source      = "../../modules/eks"
+  environment = local.environment
+  owner       = var.owner
+}

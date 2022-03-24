@@ -8,11 +8,6 @@ variable "owner" {
   description = "Owner name for resource tags"
 }
 
-variable "vpc_suffix" {
-  type        = string
-  description = "Suffix Value for VPC related resources (Ex: prod,non-prod)"
-}
-
 variable "private_cidr_blocks" {
   type        = list(string)
   description = "CIDR Blocks used for private subnets"
