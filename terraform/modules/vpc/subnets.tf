@@ -31,6 +31,7 @@ resource "aws_subnet" "private_a" {
   tags = {
     Name  = "bahmni-private-subnet-a-${var.vpc_suffix}"
     owner = var.owner
+    Subnet-Type = "private-${var.vpc_suffix}"
   }
 }
 
@@ -43,6 +44,7 @@ resource "aws_subnet" "private_b" {
   tags = {
     Name  = "bahmni-private-subnet-b-${var.vpc_suffix}"
     owner = var.owner
+    Subnet-Type = "private-${var.vpc_suffix}"
   }
 }
 
