@@ -6,7 +6,7 @@ resource "aws_eks_cluster" "bahmni-cluster" {
     subnet_ids = [data.aws_subnet_ids.private_subnet_ids.ids]
   }
 
-    depends_on = [
+  depends_on = [
     aws_iam_role_policy_attachment.cluster_EKSClusterPolicy,
     aws_iam_role_policy_attachment.cluster_EKSServicePolicy,
   ]

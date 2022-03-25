@@ -24,6 +24,6 @@ resource "aws_security_group" "node" {
   vpc_id      = data.aws_vpc.bahmni-vpc.id
 
   tags = {
-    Name  = "${var.name_prefix}-node-sg"
+    Name = "${var.name_prefix}-node-sg"
   }
 }

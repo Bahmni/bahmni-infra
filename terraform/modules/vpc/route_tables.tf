@@ -12,7 +12,7 @@ resource "aws_route_table" "public" {
   }
 }
 resource "aws_route_table" "private_a" {
-  vpc_id = aws_vpc.main.id
+  vpc_id = aws_vpc.bahmni-vpc.id
 
   route {
     cidr_block     = "0.0.0.0/0"

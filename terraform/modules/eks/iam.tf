@@ -57,7 +57,8 @@ POLICY
   tags = {
     Name  = "bahmni_eks_service_role_${var.environment}"
     owner = var.owner
-  }}
+  }
+}
 
 resource "aws_iam_role_policy_attachment" "cluster_EKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
