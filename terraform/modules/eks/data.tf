@@ -4,7 +4,7 @@ data "aws_ami" "aws-linux" {
 
   filter {
     name   = "name"
-    values = ["Amazon Linux 2 AMI (HVM) - Kernel 5.10"]
+    values = ["amzn2-ami-kernel-5.10-hvm-2.0.20220316.0-x86_64-gp2"]
   }
 }
 
@@ -15,8 +15,11 @@ data "aws_vpc" "bahmni-vpc" {
   }
 }
 
-data "aws_subnet_ids" "private_subnet_ids" {
-  vpc_id = data.aws_vpc.bahmni-vpc.id
+data "aws_subnets" "private_subnets" {
+  filter {
+    name   = "vpc-id"
+    values = ["${data.aws_vpc.bahmni-vpc.id}"]
+  }
   filter {
     name   = "tag:Subnet-Type"
     values = ["private-${var.vpc_suffix}"]

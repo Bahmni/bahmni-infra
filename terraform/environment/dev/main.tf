@@ -16,7 +16,9 @@ locals {
 }
 
 module "dev-eks" {
-  source      = "../../modules/eks"
-  environment = local.environment
-  owner       = var.owner
+  source                = "../../modules/eks"
+  environment           = local.environment
+  owner                 = var.owner
+  cluster_whitelist_ips = ""
+  vpc_suffix            = "non-prod"
 }

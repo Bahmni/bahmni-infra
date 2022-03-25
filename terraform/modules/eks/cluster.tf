@@ -3,7 +3,7 @@ resource "aws_eks_cluster" "bahmni-cluster" {
   role_arn = aws_iam_role.cluster.arn
 
   vpc_config {
-    subnet_ids = [data.aws_subnet_ids.private_subnet_ids.ids]
+    subnet_ids = data.aws_subnets.private_subnets.ids
   }
 
   depends_on = [

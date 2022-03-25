@@ -7,7 +7,6 @@ resource "aws_key_pair" "dbca_temp_key" {
   count      = 1
   key_name   = var.keyname
   public_key = tls_private_key.master.public_key_openssh
-  tags       = var.tags
 }
 
 resource "local_file" "temp_keyfile" {
