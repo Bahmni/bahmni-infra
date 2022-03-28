@@ -16,9 +16,9 @@ resource "aws_launch_configuration" "node" {
 
 resource "aws_autoscaling_group" "node" {
   launch_configuration = aws_launch_configuration.node.id
-  desired_capacity     = 1
+  desired_capacity     = 0
   max_size             = 2
-  min_size             = 1
+  min_size             = 0
   name                 = "${aws_launch_configuration.node.name}-asg"
   vpc_zone_identifier  = data.aws_subnets.private_subnets.ids
 
