@@ -5,8 +5,9 @@ resource "aws_subnet" "public_a" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name  = "bahmni-public-subnet-a-${var.vpc_suffix}"
-    owner = var.owner
+    Name        = "bahmni-public-subnet-a-${var.vpc_suffix}"
+    owner       = var.owner
+    Subnet-Type = "public-${var.vpc_suffix}"
   }
 }
 
@@ -17,8 +18,9 @@ resource "aws_subnet" "public_b" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name  = "bahmni-public-subnet-b-${var.vpc_suffix}"
-    owner = var.owner
+    Name        = "bahmni-public-subnet-b-${var.vpc_suffix}"
+    owner       = var.owner
+    Subnet-Type = "public-${var.vpc_suffix}"
   }
 }
 
@@ -29,8 +31,8 @@ resource "aws_subnet" "private_a" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name  = "bahmni-private-subnet-a-${var.vpc_suffix}"
-    owner = var.owner
+    Name        = "bahmni-private-subnet-a-${var.vpc_suffix}"
+    owner       = var.owner
     Subnet-Type = "private-${var.vpc_suffix}"
   }
 }
@@ -42,8 +44,8 @@ resource "aws_subnet" "private_b" {
   map_public_ip_on_launch = false
 
   tags = {
-    Name  = "bahmni-private-subnet-b-${var.vpc_suffix}"
-    owner = var.owner
+    Name        = "bahmni-private-subnet-b-${var.vpc_suffix}"
+    owner       = var.owner
     Subnet-Type = "private-${var.vpc_suffix}"
   }
 }
