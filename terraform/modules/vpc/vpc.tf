@@ -55,3 +55,13 @@ resource "aws_nat_gateway" "nat_az_b" {
     owner = var.owner
   }
 }
+
+resource "aws_vpc_endpoint" "ec2" {
+  vpc_id              = aws_vpc.bahmni-vpc.id
+  service_name        = "com.amazonaws.ap-south-1.ec2"
+  subnet_ids          = [aws_subnet.public_a.id, aws_subnet.public_b.id]
+  vpc_endpoint_type   = "Interface"
+  security_group_ids  = [aws_security_group.public.id, aws_security_group.private.id]
+  private_dns_enabled = true
+  tags                = merge({ Name = "bahmni-vpc-ec2-interface" }, var.tags)
+}
