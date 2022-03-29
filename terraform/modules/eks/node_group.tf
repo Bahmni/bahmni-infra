@@ -5,10 +5,6 @@ resource "aws_eks_node_group" "example" {
   subnet_ids      = data.aws_subnets.private_subnets.ids
   instance_types  = [var.node_instance_type]
   capacity_type   = "ON_DEMAND"
-  # launch_template {
-  #   id = aws_launch_template.node_launch_template.id
-  #   version = 1
-  # }
 
   scaling_config {
     desired_size = 1
@@ -27,8 +23,4 @@ resource "aws_eks_node_group" "example" {
     aws_iam_role_policy_attachment.node_AmazonEKS_CNI_Policy,
     aws_iam_role_policy_attachment.node_AmazonEKSWorkerNodePolicy
   ]
-}
-
-resource "aws_launch_template" "node_launch_template" {
-  key_name = var.keyname
 }

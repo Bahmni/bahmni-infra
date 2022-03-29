@@ -34,7 +34,6 @@ resource "aws_subnet" "private_a" {
     Name        = "bahmni-private-subnet-a-${var.vpc_suffix}"
     owner       = var.owner
     Subnet-Type = "private-${var.vpc_suffix}"
-    "kubernetes.io/cluster/bahmni-cluster" = "shared"
   }
 
 }
@@ -49,7 +48,6 @@ resource "aws_subnet" "private_b" {
     Name        = "bahmni-private-subnet-b-${var.vpc_suffix}"
     owner       = var.owner
     Subnet-Type = "private-${var.vpc_suffix}"
-    "kubernetes.io/cluster/bahmni-cluster" = "shared"
   }
 }
 
