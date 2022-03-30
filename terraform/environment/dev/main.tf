@@ -4,10 +4,7 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "bahmni-tf-bucket"
-    key            = "dev/terraform.tfstate"
-    region         = "ap-south-1"
-    dynamodb_table = "bahmni-tf-lock"
+    key = "dev/terraform.tfstate"
   }
 }
 
@@ -16,9 +13,13 @@ locals {
 }
 
 module "dev-eks" {
-  source                = "../../modules/eks"
-  environment           = local.environment
-  owner                 = var.owner
-  cluster_whitelist_ips = ""
-  vpc_suffix            = "non-prod"
+  source               = "../../modules/eks"
+  environment          = local.environment
+  owner                = var.owner
+  vpc_suffix           = "non-prod"
+  ami_name             = var.ami_name
+  desired_num_of_nodes = var.desired_num_of_nodes
+  max_num_of_nodes     = var.max_num_of_nodes
+  min_num_of_nodes     = var.min_num_of_nodes
+  node_instance_type   = var.node_instance_type
 }
