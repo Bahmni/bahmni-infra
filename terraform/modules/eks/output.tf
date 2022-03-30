@@ -1,3 +1,7 @@
+output "cluster-name" {
+  value = aws_eks_cluster.bahmni-cluster.name
+}
+
 output "endpoint" {
   value = aws_eks_cluster.bahmni-cluster.endpoint
 }

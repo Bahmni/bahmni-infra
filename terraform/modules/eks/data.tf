@@ -4,7 +4,7 @@ data "aws_ami" "aws-linux" {
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-kernel-5.10-hvm-2.0.20220316.0-x86_64-gp2"]
+    values = [var.ami_name]
   }
 }
 
@@ -18,7 +18,7 @@ data "aws_vpc" "bahmni-vpc" {
 data "aws_subnets" "private_subnets" {
   filter {
     name   = "vpc-id"
-    values = ["${data.aws_vpc.bahmni-vpc.id}"]
+    values = [data.aws_vpc.bahmni-vpc.id]
   }
   filter {
     name   = "tag:Subnet-Type"
@@ -29,7 +29,7 @@ data "aws_subnets" "private_subnets" {
 data "aws_subnets" "public_subnets" {
   filter {
     name   = "vpc-id"
-    values = ["${data.aws_vpc.bahmni-vpc.id}"]
+    values = [data.aws_vpc.bahmni-vpc.id]
   }
   filter {
     name   = "tag:Subnet-Type"

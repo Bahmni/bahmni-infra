@@ -1,6 +1,6 @@
 resource "aws_eks_cluster" "bahmni-cluster" {
-  name     = "bahmni-cluster"
-  role_arn = aws_iam_role.cluster.arn
+  name     = "bahmni-cluster-${var.environment}"
+  role_arn = aws_iam_role.cluster-role.arn
 
   vpc_config {
     subnet_ids              = data.aws_subnets.private_subnets.ids
@@ -13,5 +13,9 @@ resource "aws_eks_cluster" "bahmni-cluster" {
     aws_iam_role_policy_attachment.cluster_EKSClusterPolicy,
     aws_iam_role_policy_attachment.cluster_EKSServicePolicy,
   ]
+
+  tags = {
+    owner = var.owner
+  }
 }
 
