@@ -1,5 +1,8 @@
 # Bahmni Cloud Deployment Automation
 
+This is an Infra As Code (IAC) repository which contains various codes for creation of Infrastructure on AWS cloud.
+Tech stack: Terraform, Kubernetes, AWS
+
 ## Setting up terraform
 
 1. Install [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
