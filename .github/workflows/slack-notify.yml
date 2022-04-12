@@ -3,7 +3,7 @@ name: Slack Notify
 
 on: 
   push:
-    branches: [ BAH-1564 ]
+    branches: [ master ]
 
 jobs:
   slackNotification:

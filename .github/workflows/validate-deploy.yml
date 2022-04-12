@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Run Terrascan
         id: terrascan
-        uses: accurics/terrascan-action@main
+        uses: accurics/terrascan-action@v1.4.1
         with:
           iac_type: 'terraform'
           iac_version: 'v14'
@@ -21,7 +21,7 @@ jobs:
           only_warn: false
           #scm_token: ${{ secrets.ACCESS_TOKEN }}
           #verbose: true
-          #sarif_upload: true
+          sarif_upload: true
           #non_recursive:
           #iac_dir:
           #policy_path:
@@ -30,3 +30,7 @@ jobs:
           #find_vulnerabilities:
           #webhook_url:
           #webhook_token:
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: terrascan.sarif
