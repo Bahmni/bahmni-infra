@@ -17,3 +17,8 @@ module "non-prod-vpc" {
   public_cidr_blocks  = var.public_cidr_blocks
   vpc_cidr_block      = var.vpc_cidr_block
 }
+
+module "non-prod-bastion" {
+  source     = "../modules/bastion_host"
+  vpc_suffix = "non-prod"
+}
