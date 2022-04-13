@@ -8,5 +8,5 @@ repos:
     hooks:
     -   id: terrascan
         pass_filenames: false
-        args: [-l=infra] #NOTE: this command should point to the directory containing your .tf files
+        args: [-l=terraform/modules/eks] #NOTE: this command should point to the directory containing your .tf files
         verbose: true
