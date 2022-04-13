@@ -24,4 +24,4 @@ jobs:
       - name: Terrascan
         run: |
           terrascan init &&\
-          terrascan scan --use-colors t .
+          terrascan scan --use-colors t . -l "info"
