@@ -12,16 +12,16 @@ jobs:
         image: accurics/terrascan
         options: --user root
     steps:
+      - run: cat /etc/os-release
       - name: Checkout repository
         uses: actions/checkout@v2
-      # - name: Run Terrascan
-        
-        # run: docker run accurics/terrascan
-          # curl -L "$(curl -s https://api.github.com/repos/accurics/terrascan/releases/latest | grep -o -E "https://.+?_Darwin_x86_64.tar.gz")" > terrascan.tar.gz &&\
-          # tar -xf terrascan.tar.gz terrascan && rm terrascan.tar.gz &&\
-          # install terrascan /usr/local/bin && rm terrascan &&\
-          # terrascan
       - name: Terrascan
+        run: terrascan scan | tee scan_results.txt
+      - name: setup python
         run: |
-          terrascan init &&\
-          terrascan scan
+          apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python &&\
+          python3 -m ensurepip &&\
+          pip3 install --no-cache --upgrade pip setuptools
+      - name: execute py script # run the run.py to get the latest data
+        run: |
+          python validate.py
