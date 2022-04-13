@@ -3,3 +3,7 @@ repos:
   rev: v0.1.17
   hooks:
     - id: terraform-fmt
+    - id: terrascan
+      pass_filenames: false
+      args: [-l=infra] #NOTE: this command should point to the directory containing your .tf files
+      verbose: true

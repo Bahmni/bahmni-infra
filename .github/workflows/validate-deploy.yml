@@ -9,28 +9,39 @@ jobs:
     runs-on: ubuntu-latest
     name: terrascan-action
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-      - name: Run Terrascan
-        id: terrascan
-        uses: accurics/terrascan-action@v1.4.1
+      # - name: Checkout repository
+      #   uses: actions/checkout@v2
+      # - name: Run Terrascan
+      #   id: terrascan
+      #   uses: accurics/terrascan-action@v1.4.1
+      #   with:
+      #     iac_type: 'terraform'
+      #     iac_version: 'v14'
+      #     policy_type: 'aws'
+      #     only_warn: false
+      #     #scm_token: ${{ secrets.ACCESS_TOKEN }}
+      #     #verbose: true
+      #     sarif_upload: true
+      #     #non_recursive:
+      #     #iac_dir:
+      #     #policy_path:
+      #     #skip_rules:
+      #     #config_path:
+      #     #find_vulnerabilities:
+      #     #webhook_url:
+      #     #webhook_token:
+      # - name: Upload SARIF file
+      #   uses: github/codeql-action/upload-sarif@v1
+      #   with:
+      #     sarif_file: terrascan.sarif
+      - uses: actions/checkout@v1
+      - uses: actions/setup-python@v1
+      - name: set PY
+        run: echo "::set-env name=PY"
         with:
-          iac_type: 'terraform'
-          iac_version: 'v14'
-          policy_type: 'aws'
-          only_warn: false
-          #scm_token: ${{ secrets.ACCESS_TOKEN }}
-          #verbose: true
-          sarif_upload: true
-          #non_recursive:
-          #iac_dir:
-          #policy_path:
-          #skip_rules:
-          #config_path:
-          #find_vulnerabilities:
-          #webhook_url:
-          #webhook_token:
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v1
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      - uses: actions/cache@v1
         with:
-          sarif_file: terrascan.sarif
+          path: ~/.cache/pre-commit
+          key: pre-commit|${  }|${  }
+      - uses: pre-commit/action@v1.0.0
