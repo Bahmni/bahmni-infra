@@ -24,4 +24,4 @@ jobs:
       - name: Terrascan
         run: |
           terrascan init &&\
-          terrascan scan --use-colors t . --repo-url https://github.com/Bahmni/bahmni-infra.git
+          terrascan scan
