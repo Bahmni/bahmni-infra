@@ -24,4 +24,4 @@ jobs:
       - name: Terrascan
         run: |
           terrascan init &&\
-          terrascan scan --use-colors t . -l "info"
+          terrascan scan --use-colors t . -i terraform --iac-version v14 -t aws
