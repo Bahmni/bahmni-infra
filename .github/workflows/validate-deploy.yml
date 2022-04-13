@@ -24,4 +24,4 @@ jobs:
       - name: Terrascan
         run: |
           terrascan init &&\
-          terrascan scan --use-colors . -i terraform --iac-version v14 --repo-url https://github.com/Bahmni/bahmni-infra.git
+          terrascan scan --use-colors t /terraform/modules/eks -i terraform --iac-version v14 --repo-url https://github.com/Bahmni/bahmni-infra.git
