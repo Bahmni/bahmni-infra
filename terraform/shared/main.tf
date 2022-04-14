@@ -21,4 +21,5 @@ module "non-prod-vpc" {
 module "non-prod-bastion" {
   source     = "../modules/bastion_host"
   vpc_suffix = "non-prod"
+  depends_on = [module.non-prod-vpc]
 }
