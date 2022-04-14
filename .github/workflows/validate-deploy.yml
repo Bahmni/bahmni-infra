@@ -5,23 +5,18 @@ on:
     branches: [ BAH-1564 ]
 
 jobs:
-  terrascan_job:
+  terrascan:
+    name: terrascan
     runs-on: ubuntu-latest
-    name: terrascan-action
-    container:
-        image: accurics/terrascan
-        options: --user root
+    # container:
+    #     image: accurics/terrascan
+    #     options: --user root
     steps:
-      - run: cat /etc/os-release
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Terrascan
-        run: terrascan scan | tee scan_results.txt
-      - name: setup python
-        run: |
-          apk add --update --no-cache python3 && ln -sf python3 /usr/bin/python &&\
-          python3 -m ensurepip &&\
-          pip3 install --no-cache --upgrade pip setuptools
-      - name: execute py script # run the run.py to get the latest data
-        run: |
-          python validate.py
+      - name: Install Terrascan
+        run: brew install terrascan
+      - name: Terrascan scan
+        run: terrascan scan | tee scan_results
+      - name: Validate Scan Results
+        run: ./validate.sh
