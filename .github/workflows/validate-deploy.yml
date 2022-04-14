@@ -6,11 +6,8 @@ on:
 
 jobs:
   terrascan:
-    name: terrascan
+    name: Terrascan
     runs-on: ubuntu-latest
-    # container:
-    #     image: accurics/terrascan
-    #     options: --user root
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
