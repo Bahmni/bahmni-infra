@@ -19,7 +19,8 @@ module "non-prod-vpc" {
 }
 
 module "non-prod-bastion" {
-  source     = "../modules/bastion_host"
-  vpc_suffix = "non-prod"
-  depends_on = [module.non-prod-vpc]
+  source                   = "../modules/bastion_host"
+  vpc_suffix               = "non-prod"
+  depends_on               = [module.non-prod-vpc]
+  public_access_cidr_block = var.bastion_public_access_cidr
 }
