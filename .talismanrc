@@ -1,7 +1,0 @@
-fileignoreconfig:
-- filename: terraform/modules/eks/node_group.tf
-  checksum: 52693a652a412d0491b509b7da47256607df73b0600a2c126f78b61eee6492ed
-- filename: terraform/modules/eks/nodes.tf
-  checksum: a0911c6dc3f1397efa0a37be84bcfaafe725132f2a0ff948cc5032f5cc045d90
-- filename: .github/workflows/validate-deploy.yml
-  checksum: 942dab19cfd943db2a2e0f8c7f3c64a98ed0fe98a2ede0bd510857e03b83cb22
