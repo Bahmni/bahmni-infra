@@ -13,7 +13,6 @@ locals {
 }
 
 module "dev-eks" {
-  #ts:skip=AC_AWS_0465 Already applied
   source               = "../../modules/eks"
   environment          = local.environment
   owner                = var.owner

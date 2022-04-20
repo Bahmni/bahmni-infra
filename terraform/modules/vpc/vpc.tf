@@ -1,5 +1,4 @@
 resource "aws_vpc" "bahmni-vpc" {
-  #ts:skip=AC_AWS_0369 Already applied
   cidr_block           = var.vpc_cidr_block
   enable_dns_support   = true
   enable_dns_hostnames = true

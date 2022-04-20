@@ -7,6 +7,7 @@ terraform {
     key = "vpc/terraform.tfstate"
   }
 }
+
 module "non-prod-vpc" {
   source              = "../modules/vpc"
   vpc_suffix          = "non-prod"

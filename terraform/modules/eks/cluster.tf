@@ -1,5 +1,4 @@
 resource "aws_eks_cluster" "bahmni-cluster" {
-  #ts:skip=AC_AWS_0465 Already applied
   name     = "bahmni-cluster-${var.environment}"
   role_arn = aws_iam_role.cluster-role.arn
 
