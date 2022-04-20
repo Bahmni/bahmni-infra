@@ -1,0 +1,17 @@
+name: Validate and Deploy to AWS
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  terrascan:
+    name: Terrascan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Terrascan
+        run: brew install terrascan
+      - name: Terrascan scan and validate
+        run: ./terrascan/terrascan.sh

@@ -1,0 +1,31 @@
+
+name: Slack Notify
+
+on: 
+  workflow_run:
+    workflows: [Validate and Deploy to AWS]
+    types:
+      - completed
+
+jobs:
+  slack-workflow-status:
+      name: Notify on Slack
+      runs-on: ubuntu-latest
+      env:
+        STATUS: ${{ (github.event.workflow_run.conclusion == 'success') && 'good' || 'danger' }}
+      steps:
+        - name: Slack notification
+          uses: 8398a7/action-slack@v3
+          with:
+            status: custom
+            fields: workflow,job,commit,repo,ref,author
+            custom_payload: |
+              {
+                attachments: [{
+                  color: '${{ env.STATUS }}',
+                  title: '${{ github.event_name }}',
+                  text: `${process.env.AS_WORKFLOW}\ncommit ${process.env.AS_COMMIT} of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR}`,
+                }]
+              }
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
