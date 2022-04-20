@@ -14,4 +14,4 @@ jobs:
       - name: Install Terrascan
         run: brew install terrascan
       - name: Terrascan scan and validate
-        run: ./.github/terrascan.sh
+        run: ./terrascan/terrascan.sh
