@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # Terrascan scan and save output to scan_results
-scan_results="$(terrascan scan --config-path terrascan/terrascan-config.yaml --iac-type terraform)"
+scan_results="$(terrascan scan --config-path terrascan/terrascan-config.yaml --iac-type terraform --use-colors t)"
 
 # Get scan summary from scan_results
-scan_summary=$(echo "$scan_results" | sed -n -e '/Scan Summary -/,$p')
+scan_summary=$(echo "$scan_results" | sed -n -e '/Scan Summary -/,$p' | sed -r "s/[[:cntrl:]]\[([0-9]{1,3};)*[0-9]{1,3}m//g")
 
 #Extract values from scan_summary
 low_level_violations=$(grep "Low" <<< "$scan_summary" | grep -o -E "[0-9]+")
