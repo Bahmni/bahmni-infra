@@ -24,3 +24,12 @@ module "dev-eks" {
   min_num_of_nodes     = var.min_num_of_nodes
   node_instance_type   = var.node_instance_type
 }
+
+module "rds" {
+  source             = "../../modules/rds"
+  environment        = local.environment
+  vpc_suffix         = "non-prod"
+  mysql_rds_port     = var.mysql_rds_port
+  mysql_version      = var.mysql_version
+  rds_instance_class = var.rds_instance_class
+}

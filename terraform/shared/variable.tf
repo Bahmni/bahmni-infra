@@ -22,3 +22,8 @@ variable "vpc_cidr_block" {
   type        = string
   description = "CIDR Block used for VPC"
 }
+
+variable "bastion_public_access_cidr" {
+  type        = string
+  description = "CIDR Block used for SSH Access of Bastion Host"
+}
