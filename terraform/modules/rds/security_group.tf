@@ -8,7 +8,7 @@ resource "aws_security_group" "rds" {
     from_port   = var.mysql_rds_port
     to_port     = var.mysql_rds_port
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = [data.aws_vpc.bahmni-vpc.cidr_block]
   }
   tags = {
     Name = "bahmni-rds-sg-${var.environment}"

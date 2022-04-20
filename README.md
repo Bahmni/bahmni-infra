@@ -18,7 +18,11 @@ This is a one-time setup that needs to be run only when the repo is cloned.
         pip install pre-commit 
         (or)
         brew install pre-commit
-2. Initialise pre-commit hooks
+2. Install pre-commit dependencies
+        
+      - [terrascan](https://github.com/accurics/terrascan)
+
+3. Initialise pre-commit hooks
         
         pre-commit install --install-hooks
 
