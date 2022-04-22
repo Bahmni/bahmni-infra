@@ -2,7 +2,7 @@ name: Validate and Deploy to AWS
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, BAH-1614 ]
 
 jobs:
   terrascan:
@@ -15,3 +15,13 @@ jobs:
         run: brew install terrascan
       - name: Terrascan scan and validate
         run: ./terrascan/terrascan.sh
+  tflint:
+    name: TFLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v1
+      - name: Terrascan scan and validate
+        run: ./tflint/tflint.sh
