@@ -6,6 +6,7 @@ on:
     workflows: [Validate and Deploy to AWS]
     types:
       - completed
+    branches: [main]
 
 jobs:
   slack-workflow-status:
