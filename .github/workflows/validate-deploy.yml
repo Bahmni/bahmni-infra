@@ -23,5 +23,5 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v1
-      - name: Terrascan scan and validate
+      - name: TFLint
         run: ./tflint/tflint.sh
