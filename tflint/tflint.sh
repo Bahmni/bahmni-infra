@@ -12,6 +12,7 @@ if [[ $GITHUB_ACTIONS ]]
 then
     terraform init -backend=false
 fi
+tflint --config=../../tflint/.tflint.hcl --loglevel=info --init
 tflint --config=../../tflint/.tflint.hcl --loglevel=info
 if [[ $? -eq 0 ]]
 then
@@ -28,6 +29,7 @@ do
         terraform init -backend=false
     fi
     echo -e "${GREEN_COLOR}TFLint Scanning $folder....$NO_COLOR"
+    tflint --config=../../../tflint/.tflint.hcl --loglevel=info --init
     tflint --config=../../../tflint/.tflint.hcl --loglevel=info
     if [[ $? -eq 0 ]]
     then
