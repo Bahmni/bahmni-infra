@@ -1,3 +1,4 @@
 output "rds" {
-  value = module.rds
+  value       = module.rds
+  description = "Output values from RDS Module"
 }

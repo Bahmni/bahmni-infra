@@ -17,7 +17,7 @@ terraform {
   }
 }
 
-module "non-prod-vpc" {
+module "non_prod_vpc" {
   source              = "../modules/vpc"
   vpc_suffix          = "non-prod"
   availability_zones  = var.availability_zones
@@ -27,7 +27,7 @@ module "non-prod-vpc" {
   vpc_cidr_block      = var.vpc_cidr_block
 }
 
-module "non-prod-bastion" {
+module "non_prod_bastion" {
   source                   = "../modules/bastion_host"
   vpc_suffix               = "non-prod"
   depends_on               = [module.non-prod-vpc]
