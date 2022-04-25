@@ -43,20 +43,26 @@ jobs:
     needs: [ terrascan, tflint, tfsec ]
     runs-on: ubuntu-latest
     env:
-      STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfsec.result == 'success') && 'good' || 'danger' }}
+      STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfsec.result == 'success') && 'success' || 'failure' }}
     steps:
       - name: Slack notification
+        # uses: 8398a7/action-slack@v3
+        # with:
+        #   status: custom
+        #   fields: workflow,job,commit,repo,ref,author
+        #   custom_payload: |
+        #     {
+        #       attachments: [{
+        #         color: '${{ env.STATUS }}',
+        #         title: '${{ github.event_name }}',
+        #         text: `${process.env.AS_WORKFLOW}\ncommit ${process.env.AS_COMMIT} of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR}`,
+        #       }]
+        #     }
+        # env:
+        #   SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         uses: 8398a7/action-slack@v3
         with:
-          status: custom
-          fields: workflow,job,commit,repo,ref,author
-          custom_payload: |
-            {
-              attachments: [{
-                color: '${{ env.STATUS }}',
-                title: '${{ github.event_name }}',
-                text: `${process.env.AS_WORKFLOW}\ncommit ${process.env.AS_COMMIT} of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR}`,
-              }]
-            }
+          status: ${{ env.STATUS }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow # selectable (default: repo,message)
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
