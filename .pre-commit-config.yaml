@@ -9,3 +9,7 @@ repos:
       name: Terrascan
       language: script
       entry : ./terrascan/terrascan.sh
+    - id: tflint
+      name: TFLint
+      language: script
+      entry: ./tflint/tflint.sh

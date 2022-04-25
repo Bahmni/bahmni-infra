@@ -3,6 +3,15 @@ provider "aws" {
 }
 
 terraform {
+  required_version = "~>1.1.0"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "4.9.0"
+    }
+  }
+
   backend "s3" {
     key = "dev/terraform.tfstate"
   }
@@ -12,11 +21,11 @@ locals {
   environment = "dev"
 }
 
-module "dev-eks" {
+module "dev_eks" {
   source               = "../../modules/eks"
   environment          = local.environment
   owner                = var.owner
-  vpc_suffix           = "non-prod"
+  vpc_suffix           = var.vpc_suffix
   ami_name             = var.ami_name
   desired_num_of_nodes = var.desired_num_of_nodes
   max_num_of_nodes     = var.max_num_of_nodes
@@ -27,7 +36,7 @@ module "dev-eks" {
 module "rds" {
   source             = "../../modules/rds"
   environment        = local.environment
-  vpc_suffix         = "non-prod"
+  vpc_suffix         = var.vpc_suffix
   mysql_rds_port     = var.mysql_rds_port
   mysql_version      = var.mysql_version
   rds_instance_class = var.rds_instance_class

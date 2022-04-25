@@ -15,3 +15,38 @@ jobs:
         run: brew install terrascan
       - name: Terrascan scan and validate
         run: ./terrascan/terrascan.sh
+
+  tflint:
+    name: TFLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v1
+      - name: TFLint
+        run: ./tflint/tflint.sh
+
+  slack-workflow-status:
+    name: Notify on Slack
+    if: ${{ always() }}
+    needs: [ terrascan, tflint ]
+    runs-on: ubuntu-latest
+    env:
+      STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && 'good' || 'danger' }}
+    steps:
+      - name: Slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          fields: workflow,job,commit,repo,ref,author
+          custom_payload: |
+            {
+              attachments: [{
+                color: '${{ env.STATUS }}',
+                title: '${{ github.event_name }}',
+                text: `${process.env.AS_WORKFLOW}\ncommit ${process.env.AS_COMMIT} of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR}`,
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
