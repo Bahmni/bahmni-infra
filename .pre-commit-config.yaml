@@ -13,3 +13,7 @@ repos:
       name: TFLint
       language: script
       entry: ./tflint/tflint.sh
+    - id: tfsec
+      name: TFSec
+      language: script
+      entry: ./tfsec/tfsec.sh
