@@ -37,8 +37,9 @@ jobs:
       - name: TFSec
         run: ./tfsec/tfsec.sh
 
-  validate:
-    name: terraform-validate
+  validate-dev:
+    name: Terraform Validate-Dev
+    needs: [ terrascan, tflint, tfsec ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -50,10 +51,10 @@ jobs:
   slack-workflow-status:
     name: Notify on Slack
     if: ${{ always() }}
-    needs: [ terrascan, tflint, tfsec, validate ]
+    needs: [ terrascan, tflint, tfsec, validate-dev ]
     runs-on: ubuntu-latest
     env:
-      STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.validate.result == 'success') && (needs.tfsec.result == 'success') && 'success' || 'failure' }}
+      STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.validate-dev.result == 'success') && (needs.tfsec.result == 'success') && 'success' || 'failure' }}
     steps:
       - name: Slack notification
         uses: 8398a7/action-slack@v3
