@@ -1,23 +1,19 @@
 #!/bin/bash
 
 set -e
-SCRIPT_PATH=$(realpath "${BASH_SOURCE[0]}")
-SCRIPT_DIRECTORY=$(dirname "$SCRIPT_PATH")
-GREEN_COLOR="\033[1;32m"
-YELLOW_COLOR="\033[1;33m"
-NO_COLOR="\033[0m"
+REL_SCRIPT_DIR="`dirname \"$0\"`"
+SCRIPT_DIR="`( cd \"$REL_SCRIPT_DIR\" && pwd)`"
+# sourcing git hub actions common script
+source $SCRIPT_DIR/../.github/gha_common.sh
 
 run_scan(){
     folder=$1
 
     cd $folder
-    if [[ $GITHUB_ACTIONS ]]
-    then
-        terraform init -backend=false
-    fi
+    terraform_init
 
     echo -e "${GREEN_COLOR}TFSec Scanning $folder....$NO_COLOR"
-    tfsec --config-file $SCRIPT_DIRECTORY/tfsec.yml --tfvars-file=terraform.tfvars --verbose
+    tfsec --config-file $SCRIPT_DIR/tfsec.yml --tfvars-file=terraform.tfvars --verbose
 
     cd - > /dev/null
     echo -e "\n"

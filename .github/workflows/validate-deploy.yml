@@ -2,7 +2,7 @@ name: Validate and Deploy to AWS
 
 on:
   push:
-    branches: [ BAH-1629 ]
+    branches: [ main ]
 
 jobs:
   terrascan:
@@ -37,24 +37,23 @@ jobs:
       - name: TFSec
         run: ./tfsec/tfsec.sh
 
-  validate-dev:
-    name: Terraform Validate-Dev
-    needs: [ terrascan, tflint, tfsec ]
+  tfvalidate:
+    name: Terraform Validate
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: validate
-        run: ./terraform/terraform.sh            
+      - name: Terraform Validate
+        run: ./terraform/tf-validate.sh
 
 
   slack-workflow-status:
     name: Notify on Slack
     if: ${{ always() }}
-    needs: [ terrascan, tflint, tfsec, validate-dev ]
+    needs: [ terrascan, tflint, tfsec, tfvalidate ]
     runs-on: ubuntu-latest
     env:
-      STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.validate-dev.result == 'success') && (needs.tfsec.result == 'success') && 'success' || 'failure' }}
+      STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfvalidate.result == 'success') && (needs.tfsec.result == 'success') && 'success' || 'failure' }}
     steps:
       - name: Slack notification
         uses: 8398a7/action-slack@v3
