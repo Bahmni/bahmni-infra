@@ -9,6 +9,7 @@ resource "aws_security_group" "rds" {
     to_port     = var.mysql_rds_port
     protocol    = "tcp"
     cidr_blocks = [data.aws_vpc.bahmni-vpc.cidr_block]
+    description = "Allows Input connection on MySQL Port"
   }
   tags = {
     Name = "bahmni-rds-sg-${var.environment}"
