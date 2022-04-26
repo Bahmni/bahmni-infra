@@ -26,27 +26,29 @@ jobs:
         uses: terraform-linters/setup-tflint@v1
       - name: TFLint
         run: ./tflint/tflint.sh
+  tfsec:
+    name: TFSec
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install TFSec
+        run: brew install tfsec
+      - name: TFSec
+        run: ./tfsec/tfsec.sh
 
   slack-workflow-status:
     name: Notify on Slack
     if: ${{ always() }}
-    needs: [ terrascan, tflint ]
+    needs: [ terrascan, tflint, tfsec ]
     runs-on: ubuntu-latest
     env:
-      STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && 'good' || 'danger' }}
+      STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfsec.result == 'success') && 'success' || 'failure' }}
     steps:
       - name: Slack notification
         uses: 8398a7/action-slack@v3
         with:
-          status: custom
-          fields: workflow,job,commit,repo,ref,author
-          custom_payload: |
-            {
-              attachments: [{
-                color: '${{ env.STATUS }}',
-                title: '${{ github.event_name }}',
-                text: `${process.env.AS_WORKFLOW}\ncommit ${process.env.AS_COMMIT} of ${process.env.AS_REPO}@${process.env.AS_REF} by ${process.env.AS_AUTHOR}`,
-              }]
-            }
+          status: ${{ env.STATUS }}
+          fields: message,author,workflow,repo 
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
