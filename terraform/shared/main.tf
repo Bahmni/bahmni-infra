@@ -30,6 +30,6 @@ module "non_prod_vpc" {
 module "non_prod_bastion" {
   source                   = "../modules/bastion_host"
   vpc_suffix               = "non-prod"
-  depends_on               = [module.non-prod-vpc]
+  depends_on               = [module.non_prod_vpc]
   public_access_cidr_block = var.bastion_public_access_cidr
 }

@@ -15,7 +15,7 @@ jobs:
         run: brew install terrascan
       - name: Terrascan scan and validate
         run: ./terrascan/terrascan.sh
-
+  
   tflint:
     name: TFLint
     runs-on: ubuntu-latest
@@ -37,13 +37,23 @@ jobs:
       - name: TFSec
         run: ./tfsec/tfsec.sh
 
+  tfvalidate:
+    name: Terraform Validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Terraform Validate
+        run: ./terraform/tf-validate.sh
+
+
   slack-workflow-status:
     name: Notify on Slack
     if: ${{ always() }}
-    needs: [ terrascan, tflint, tfsec ]
+    needs: [ terrascan, tflint, tfsec, tfvalidate ]
     runs-on: ubuntu-latest
     env:
-      STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfsec.result == 'success') && 'success' || 'failure' }}
+      STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfvalidate.result == 'success') && (needs.tfsec.result == 'success') && 'success' || 'failure' }}
     steps:
       - name: Slack notification
         uses: 8398a7/action-slack@v3
