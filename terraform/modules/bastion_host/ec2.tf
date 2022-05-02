@@ -6,7 +6,8 @@ resource "aws_instance" "bastion" {
   subnet_id                   = data.aws_subnets.public_subnets.ids[0]
   user_data                   = data.template_file.user_data_bastion.rendered
   metadata_options {
-    http_tokens = "required"
+    http_tokens   = "required"
+    http_endpoint = "enabled"
   }
 
   root_block_device {

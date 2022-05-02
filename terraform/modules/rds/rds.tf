@@ -35,5 +35,5 @@ resource "random_string" "mysql_user_name" {
 resource "random_string" "mysql_user_password" {
   length           = 16
   special          = true
-  override_special = "@#%&*()-_=+[]{}<>:?"
+  override_special = "#%&*()-_=+[]{}<>:?"
 }
