@@ -1,13 +1,3 @@
-data "aws_ami" "aws-linux" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = [var.ami_name]
-  }
-}
-
 data "aws_vpc" "bahmni-vpc" {
   filter {
     name   = "tag:Name"

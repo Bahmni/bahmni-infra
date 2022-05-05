@@ -18,11 +18,6 @@ variable "max_num_of_nodes" {
   description = "Number of maximum nodes in the default node group"
 }
 
-variable "ami_name" {
-  type        = string
-  description = "Name of the AMI to be used for nodes"
-}
-
 variable "node_instance_type" {
   type        = string
   description = "Type of Instance to be used for nodes"

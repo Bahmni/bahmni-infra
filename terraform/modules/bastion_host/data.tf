@@ -1,10 +1,11 @@
 data "aws_ami" "amazon_linux_2" {
   most_recent = true
+  owners      = ["amazon"]
+
   filter {
     name   = "name"
-    values = ["amzn2-ami-kernel-5.10-hvm-2.0.20220316.0-x86_64-gp2"]
+    values = [var.ami_name]
   }
-  owners = ["amazon"]
 }
 
 data "aws_vpc" "bahmni-vpc" {

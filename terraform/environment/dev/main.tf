@@ -26,7 +26,6 @@ module "dev_eks" {
   environment          = local.environment
   owner                = var.owner
   vpc_suffix           = var.vpc_suffix
-  ami_name             = var.ami_name
   desired_num_of_nodes = var.desired_num_of_nodes
   max_num_of_nodes     = var.max_num_of_nodes
   min_num_of_nodes     = var.min_num_of_nodes

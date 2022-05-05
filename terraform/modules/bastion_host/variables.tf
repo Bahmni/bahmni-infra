@@ -7,3 +7,8 @@ variable "public_access_cidr_block" {
   type        = string
   description = "CIDR Block used for SSH Access"
 }
+
+variable "ami_name" {
+  type        = string
+  description = "Name of the AMI to be used for nodes"
+}

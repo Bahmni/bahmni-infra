@@ -27,3 +27,8 @@ variable "bastion_public_access_cidr" {
   type        = string
   description = "CIDR Block used for SSH Access of Bastion Host"
 }
+
+variable "ami_name" {
+  type        = string
+  description = "Name of the AMI to be used for nodes"
+}
