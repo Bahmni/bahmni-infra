@@ -38,3 +38,24 @@ resource "random_string" "mysql_user_password" {
   special          = true
   override_special = "#%&*()-_=+[]{}<>:?"
 }
+
+resource "aws_ssm_parameter" "rds_mysql_username" {
+  name        = "/${var.environment}/rds/mysql/username"
+  description = "MySQL RDS Master Username for ${var.environment}"
+  type        = "SecureString"
+  value       = aws_db_instance.mysql.username
+}
+
+resource "aws_ssm_parameter" "rds_mysql_password" {
+  name        = "/${var.environment}/rds/mysql/password"
+  description = "MySQL RDS Master Password for ${var.environment}"
+  type        = "SecureString"
+  value       = aws_db_instance.mysql.password
+}
+
+resource "aws_ssm_parameter" "rds_mysql_host" {
+  name        = "/${var.environment}/rds/mysql/host"
+  description = "MySQL RDS Host for ${var.environment}"
+  type        = "SecureString"
+  value       = aws_db_instance.mysql.address
+}

@@ -1,4 +1,4 @@
-output "rds" {
-  value       = module.rds
-  description = "Output values from RDS Module"
+output "eks_cluster_name" {
+  value       = module.dev_eks.cluster-name
+  description = "Name of the EKS Cluster"
 }
