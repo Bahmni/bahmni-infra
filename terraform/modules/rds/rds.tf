@@ -30,6 +30,7 @@ resource "random_string" "mysql_user_name" {
   length  = 8
   upper   = false
   special = false
+  number  = false
 }
 
 resource "random_string" "mysql_user_password" {
