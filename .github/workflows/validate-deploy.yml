@@ -46,11 +46,31 @@ jobs:
       - name: Terraform Validate
         run: ./terraform/tf-validate.sh
 
+  tfapply:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.BAHMNI_AWS_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.BAHMNI_AWS_SECRET }}
+      AWS_DEFAULT_REGION: ${{ secrets.BAHMNI_AWS_REGION }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Provision shared resources
+        run: |
+          cd terraform/shared/
+          terraform init -backend-config=../config.s3.tfbackend
+          terraform apply -auto-approve
+      - name: Provision resources for dev
+        run: |
+          cd terraform/environment/dev/
+          terraform init -backend-config=../../config.s3.tfbackend
+          terraform apply -auto-approve
 
   slack-workflow-status:
     name: Notify on Slack
     if: ${{ always() }}
-    needs: [ terrascan, tflint, tfsec, tfvalidate ]
+    needs: [ terrascan, tflint, tfsec, tfvalidate, tfapply ]
     runs-on: ubuntu-latest
     env:
       STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfvalidate.result == 'success') && (needs.tfsec.result == 'success') && 'success' || 'failure' }}

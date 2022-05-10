@@ -12,7 +12,7 @@ YELLOW_COLOR="\033[1;33m"
 NO_COLOR="\033[0m"
 
 terraform_init(){
-    if [[ $GITHUB_ACTIONS ]]
+    if [[ ${GITHUB_ACTIONS:-} ]]
     then
         terraform init -backend=false
     fi
