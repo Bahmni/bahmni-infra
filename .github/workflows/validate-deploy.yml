@@ -48,6 +48,8 @@ jobs:
 
   tfapply:
     name: Terraform Apply
+    needs: [ terrascan, tflint, tfsec, tfvalidate ]
+    if: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfvalidate.result == 'success') && (needs.tfsec.result == 'success') }}
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.BAHMNI_AWS_ID }}
@@ -70,10 +72,10 @@ jobs:
   slack-workflow-status:
     name: Notify on Slack
     if: ${{ always() }}
-    needs: [ terrascan, tflint, tfsec, tfvalidate, tfapply ]
+    needs: [ tfapply ]
     runs-on: ubuntu-latest
     env:
-      STATUS: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfvalidate.result == 'success') && (needs.tfsec.result == 'success') && 'success' || 'failure' }}
+      STATUS: ${{ (needs.tfapply.result == 'success') && 'success' || 'failure' }}
     steps:
       - name: Slack notification
         uses: 8398a7/action-slack@v3
