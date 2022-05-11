@@ -57,7 +57,23 @@ Now before every commit, the hooks will be executed.
 ## Backend Creation
 Terraform maintains a [state file](https://www.terraform.io/language/state) which keeps track of which resources are created. It is recommended to store the state files in remote backends.
 
-For the [S3 backend coniguration](https://www.terraform.io/language/settings/backends/s3), manual creation of an S3 bucket and a DynamoDB table with LockID as the partition key is needed. This creation is an one-time setup and the same bucket and dynamodb table can be used across environments. 
+For the [S3 backend coniguration](https://www.terraform.io/language/settings/backends/s3), manual creation of an S3 bucket and a DynamoDB table with LockID as the partition key is needed. This creation is an one-time setup and the same bucket and dynamodb table can be used across environments.
+
+STEPS TO CREATE S3 BUCKET:
+
+1: Create a Bucket
+
+`aws s3api create-bucket --bucket <bucket-name> --create-bucket-configuration --region ap-south-1 LocationConstraint=ap-south-1`
+
+2: Enable Versioning
+
+`aws s3api put-bucket-versioning --bucket <bucket-name> --versioning-configuration Status=Enabled`
+
+3: Check versioning status of versioning-demo-cli bucket
+
+`aws s3api get-bucket-versioning --bucket <bucket-name>`
+
+
 
 Once the S3 bucket and the DynamoDB table is created, set the values in the `config.s3.tfbackend` file inside terraform directory. 
 
