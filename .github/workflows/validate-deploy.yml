@@ -68,6 +68,19 @@ jobs:
           cd terraform/environment/dev/
           terraform init -backend-config=../../config.s3.tfbackend
           terraform apply -auto-approve
+      - name: Authorize kubectl with EKS
+        run: aws eks update-kubeconfig --name $(terraform output -raw eks_cluster_name)
+      - name: Install Nginx Ingress
+        run: kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.1.2/deploy/static/provider/aws/deploy.yaml
+      - name: Set Ingress DNS as SSM Parameter
+        run: |
+          INGRESS_DNS=$(kubectl get services --namespace ingress-nginx ingress-nginx-controller --output jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          aws ssm put-parameter \
+          --name "/dev/ingress/dns" \
+          --value "$INGRESS_DNS" \
+          --type String \
+          --overwrite
+
 
   slack-workflow-status:
     name: Notify on Slack
