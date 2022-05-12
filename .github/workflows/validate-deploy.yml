@@ -70,7 +70,7 @@ jobs:
           cd terraform/environment/dev/
           terraform init -backend-config=../../config.s3.tfbackend
           terraform apply -auto-approve
-          eksctl create iamidentitymapping --cluster $(terraform output -raw eks_cluster_name) --arn $(terraform output -raw user_aceess_role_arn) --group view --no-duplicate-arns
+          eksctl create iamidentitymapping --cluster $(terraform output -raw eks_cluster_name) --arn $(terraform output -raw user_aceess_role_arn) --group system:masters --no-duplicate-arns
 
   slack-workflow-status:
     name: Notify on Slack
