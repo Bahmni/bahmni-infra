@@ -76,7 +76,12 @@ jobs:
         run: |
           aws eks update-kubeconfig --name $CLUSTER_NAME
           kubectl apply -f k8s-rbac/read-only.yaml
-          eksctl create iamidentitymapping --cluster $CLUSTER_NAME --arn $USER_ACCESS_ROLE_ARN --group read-only-access-group --no-duplicate-arns
+          eksctl create iamidentitymapping \
+          --cluster $CLUSTER_NAME \
+          --arn $USER_ACCESS_ROLE_ARN \
+          --group read-only-access-group \
+          --username assume-role-user \
+          --no-duplicate-arns
 
   slack-workflow-status:
     name: Notify on Slack

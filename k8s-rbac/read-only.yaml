@@ -12,6 +12,8 @@ rules:
   - pods/log
   - services
   - replicationcontrollers
+  - secrets
+  - configmaps
   verbs:
   - get
   - list
