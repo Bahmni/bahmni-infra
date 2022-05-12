@@ -70,3 +70,7 @@ resource "aws_iam_role_policy_attachment" "cluster_EKSServicePolicy" {
   role       = aws_iam_role.cluster-role.name
 }
 
+resource "aws_iam_role" "user_access_cluster" {
+  name               = "EKSUserAccessRoleFor-${aws_eks_cluster.bahmni-cluster.name}"
+  assume_role_policy = data.aws_iam_policy_document.iam_cluster_access_policy.json
+}

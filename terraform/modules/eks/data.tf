@@ -36,3 +36,15 @@ data "aws_subnets" "public_subnets" {
     values = ["public-${var.vpc_suffix}"]
   }
 }
+
+data "aws_caller_identity" "current_account_info" {}
+
+data "aws_iam_policy_document" "iam_cluster_access_policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      identifiers = [data.aws_caller_identity.current_account_info.account_id]
+      type        = "AWS"
+    }
+  }
+}

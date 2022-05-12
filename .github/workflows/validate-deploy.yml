@@ -2,7 +2,7 @@ name: Validate and Deploy to AWS
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, BAH-1731 ]
 
 jobs:
   terrascan:
@@ -58,6 +58,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Install eksctl
+        run: brew install weaveworks/tap/eksctl
       - name: Provision shared resources
         run: |
           cd terraform/shared/
@@ -68,6 +70,7 @@ jobs:
           cd terraform/environment/dev/
           terraform init -backend-config=../../config.s3.tfbackend
           terraform apply -auto-approve
+          eksctl create iamidentitymapping --cluster $(terraform output -raw eks_cluster_name) --arn $(terraform output -raw user_aceess_role_arn) --group view --no-duplicate-arns
 
   slack-workflow-status:
     name: Notify on Slack
