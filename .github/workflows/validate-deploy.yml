@@ -70,7 +70,13 @@ jobs:
           cd terraform/environment/dev/
           terraform init -backend-config=../../config.s3.tfbackend
           terraform apply -auto-approve
-          eksctl create iamidentitymapping --cluster $(terraform output -raw eks_cluster_name) --arn $(terraform output -raw user_aceess_role_arn) --group system:masters --no-duplicate-arns
+          echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> $GITHUB_ENV
+          echo "USER_ACCESS_ROLE_ARN=$(terraform output -raw user_aceess_role_arn)" >> $GITHUB_ENV
+      - name: Setup User Access for Cluster
+        run: |
+          aws eks update-kubeconfig --name $CLUSTER_NAME
+          kubectl apply -f k8s-rbac/read-only.yaml
+          eksctl create iamidentitymapping --cluster $CLUSTER_NAME --arn $USER_ACCESS_ROLE_ARN --group read-only-access-group --no-duplicate-arns
 
   slack-workflow-status:
     name: Notify on Slack
