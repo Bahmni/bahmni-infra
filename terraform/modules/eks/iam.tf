@@ -78,6 +78,27 @@ resource "aws_iam_role" "eks_read_only" {
   }
 }
 
+resource "aws_iam_policy" "eks_describe_cluster" {
+  name = "BahmniEKSDescribeCluster"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "eks:DescribeCluster",
+        ]
+        Effect   = "Allow"
+        Resource = aws_eks_cluster.bahmni-cluster.arn
+      },
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "describe_cluster_attachment_to_readonly_role" {
+  policy_arn = aws_iam_policy.eks_describe_cluster.arn
+  role       = aws_iam_role.eks_read_only.name
+}
+
 resource "aws_iam_policy" "assume_role_eks_read_only_role" {
   name = "BahmniEKSClusterReadOnlyAccess"
   policy = jsonencode({
@@ -89,13 +110,6 @@ resource "aws_iam_policy" "assume_role_eks_read_only_role" {
         ]
         Effect   = "Allow"
         Resource = aws_iam_role.eks_read_only.arn
-      },
-      {
-        Action = [
-          "eks:DescribeCluster",
-        ]
-        Effect   = "Allow"
-        Resource = aws_eks_cluster.bahmni-cluster.arn
       },
     ]
   })
