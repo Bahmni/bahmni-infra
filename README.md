@@ -32,6 +32,8 @@ Now before every commit, the hooks will be executed.
 ```
 
 ├── ...
+├── aws
+├── ├── policies                  # aws custom policies
 ├── terraform
 │   ├── environment               # each directory refers to a seperate environment
 │       ├── dev
@@ -76,6 +78,35 @@ STEPS TO CREATE S3 BUCKET:
 
 
 Once the S3 bucket and the DynamoDB table is created, set the values in the `config.s3.tfbackend` file inside terraform directory. 
+
+## Adding and updating policies in AWS
+`aws/policies` folder contains all custom policies applied to the AWS account. Below CLI assumes that your local aws profile is named `bahmni-india` - please change it accordingly or remove it if you have set `export AWS_PROFILE=your-profile`
+
+To create a fresh policy 
+```
+aws iam create-policy --policy-name BahmniInfraAdmin --policy-document file://aws/policies/infra_admin.json --profile bahmni-india
+```
+
+If you need to update an existing policy
+1) Fetch the policy arn
+```
+aws iam list-policies --scope Local --profile bahmni-india
+```
+
+2) (Conditional) List policy versions - Note if there are already 5 revisions of the policty you will need to delete the oldest version. Remember to fetch the oldest version where `"IsDefaultVersion": false`
+```
+aws iam list-policy-versions --policy-arn arn:aws:iam::{YourAccountNumber}:policy/BahmniInfraAdmin --profile bahmni-india
+```
+
+3) (Conditional) Delete policy version
+```
+aws iam delete-policy-version --policy-arn arn:aws:iam::{YourAccountNumber}:policy/BahmniInfraAdmin --version-id v28 --profile bahmni-india
+```
+
+4) Apply policy changes to recate a new revision
+```
+aws iam create-policy-version --policy-arn arn:aws:iam::863324974761:policy/BahmniInfraAdmin --policy-document file://aws/policies/infra_admin.json --set-as-default --profile bahmni-india-admin
+```
 
 ## Creating shared (base) resources
 

@@ -51,15 +51,20 @@ jobs:
     needs: [ terrascan, tflint, tfsec, tfvalidate ]
     if: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfvalidate.result == 'success') && (needs.tfsec.result == 'success') }}
     runs-on: ubuntu-latest
-    env:
-      AWS_ACCESS_KEY_ID: ${{ secrets.BAHMNI_AWS_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.BAHMNI_AWS_SECRET }}
-      AWS_DEFAULT_REGION: ${{ secrets.BAHMNI_AWS_REGION }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Install eksctl
         run: brew install weaveworks/tap/eksctl
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.BAHMNI_AWS_ID }}
+          aws-secret-access-key: ${{ secrets.BAHMNI_AWS_SECRET }}
+          aws-region: ap-south-1
+          role-to-assume: ${{ secrets.BAHMNI_INFRA_ADMIN_ROLE }}
+          role-duration-seconds: 1200  # 20 mins
+          role-session-name: BahmniInfraAdminSession
       - name: Provision shared resources
         run: |
           cd terraform/shared/
