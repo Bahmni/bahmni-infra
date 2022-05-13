@@ -70,7 +70,29 @@ resource "aws_iam_role_policy_attachment" "cluster_EKSServicePolicy" {
   role       = aws_iam_role.cluster-role.name
 }
 
-resource "aws_iam_role" "user_access_cluster" {
-  name               = "EKSUserAccessRoleFor-${aws_eks_cluster.bahmni-cluster.name}"
-  assume_role_policy = data.aws_iam_policy_document.iam_cluster_access_policy.json
+resource "aws_iam_role" "eks_read_only" {
+  name               = "BahmniEKSReadOnlyRoleForIAMUsersTo${title(var.environment)}Cluster"
+  assume_role_policy = data.aws_iam_policy_document.assume_role_iam_users_policy_document.json
+  tags = {
+    environment = var.environment
+  }
+}
+
+resource "aws_iam_policy" "assume_role_eks_read_only_role" {
+  name = "BahmniEKS${title(var.environment)}ClusterReadOnlyAccess"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "sts:AssumeRole",
+        ]
+        Effect   = "Allow"
+        Resource = aws_iam_role.eks_read_only.arn
+      },
+    ]
+  })
+  tags = {
+    environment = var.environment
+  }
 }

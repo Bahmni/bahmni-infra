@@ -3,7 +3,12 @@ output "eks_cluster_name" {
   description = "Name of the EKS Cluster"
 }
 
-output "user_aceess_role_arn" {
-  value       = module.dev_eks.user_access_role_arn
-  description = "ARN of the role used to create identity mapping in EKS cluster"
+output "eks_read_only_access_role_arn" {
+  value       = module.dev_eks.eks_read_only_access_role_arn
+  description = "ARN of the role for EKS Read Only Access"
+}
+
+output "eks_read_only_access_policy_arn" {
+  value       = module.dev_eks.eks_read_only_access_policy_arn
+  description = "ARN of the policy for EKS Read Only Access"
 }

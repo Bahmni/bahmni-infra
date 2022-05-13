@@ -39,7 +39,7 @@ data "aws_subnets" "public_subnets" {
 
 data "aws_caller_identity" "current_account_info" {}
 
-data "aws_iam_policy_document" "iam_cluster_access_policy" {
+data "aws_iam_policy_document" "assume_role_iam_users_policy_document" {
   statement {
     actions = ["sts:AssumeRole"]
     principals {
