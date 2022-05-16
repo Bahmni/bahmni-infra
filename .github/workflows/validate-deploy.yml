@@ -2,7 +2,9 @@ name: Validate and Deploy to AWS
 
 on:
   push:
-    branches: [ main, BAH-1731 ]
+    branches: [ main ]
+    paths-ignore:
+      - 'README.md'
 
 jobs:
   terrascan:
