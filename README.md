@@ -8,9 +8,9 @@ Tech stack: Terraform, Kubernetes, AWS
 
 1. Install [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
 2. Install [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+      
 
-
-      aws configure --profile bahmni-infra      
+   `aws configure --profile bahmni-infra`     
 
 ### Development Setup
 This is a one-time setup that needs to be run only when the repo is cloned.
