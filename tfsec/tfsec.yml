@@ -5,3 +5,4 @@ exclude:
   - aws-rds-enable-performance-insights       # Performance insights are optional and costs additionaly
   - aws-vpc-no-public-egress-sgr              # External access by instances to the internet
   - aws-vpc-no-public-ingress-sgr             # Public access from anywhere to bastion host
+  - aws-iam-enforce-mfa

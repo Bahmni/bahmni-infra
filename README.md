@@ -163,7 +163,7 @@ aws iam attach-role-policy --policy-arn arn:aws:iam::{YourAccountNumber}:policy/
 ## Creating a User Group for EKS Cluster Read Only Access
 This step is a prerequisite before applying terraform resources.
 
-`aws iam create-group --group-name bahmni-eks-read-only`
+`aws iam create-group --group-name bahmni_eks_read_only`
 
 When IAM users are added to this group then they will get read access to resources in the EKS cluster. 
 

@@ -124,6 +124,8 @@
           "Sid": "IAM",
           "Effect": "Allow",
           "Action": [
+              "iam:AttachGroupPolicy",
+              "iam:DetachGroupPolicy",
               "iam:CreatePolicies",
               "iam:CreateRole",
               "iam:CreatePolicy",
