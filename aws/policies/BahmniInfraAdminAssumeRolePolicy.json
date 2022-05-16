@@ -6,6 +6,6 @@
         "sts:AssumeRole",
         "sts:TagSession"
       ],
-      "Resource": "arn:aws:iam::863324974761:role/BahmniInfraAdminRoleForIAMUsers"
+      "Resource": "arn:aws:iam::{YourAccountNumber}:role/BahmniInfraAdminRoleForIAMUsers"
   }
 }

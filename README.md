@@ -34,6 +34,7 @@ Now before every commit, the hooks will be executed.
 ├── ...
 ├── aws
 ├── ├── policies                  # aws custom policies
+├── ├── roles                     # aws custom roles
 ├── terraform
 │   ├── environment               # each directory refers to a seperate environment
 │       ├── dev
@@ -80,11 +81,17 @@ STEPS TO CREATE S3 BUCKET:
 Once the S3 bucket and the DynamoDB table is created, set the values in the `config.s3.tfbackend` file inside terraform directory. 
 
 ## Adding and updating policies in AWS
-`aws/policies` folder contains all custom policies applied to the AWS account. Below CLI assumes that your local aws profile is named `bahmni-india` - please change it accordingly or remove it if you have set `export AWS_PROFILE=your-profile`
+`aws/policies` folder contains all custom policies applied to the AWS account. Below CLI assumes that your local aws profile is named `bahmni-india` - please change it accordingly or remove it if you have set `export AWS_PROFILE=your-profile`.
+
+>⚠️ Note: you will need to replace {YourAccountNumber} with your account number in CLI and in the policy documents. Remember to not check in your account number to public github repositories
+
+- `BahmniConsoleReadOnly.json` provies console read only access
+- `BahmniInfraAdminAssumeRolePolicy.json` Allows user to assume BahmniInfraAdminRoleForIAMUsers Role
+- `BahmniInfraAdmin.json` provides least priviledge access to provision Bahmni lite infra
 
 To create a fresh policy 
 ```
-aws iam create-policy --policy-name BahmniInfraAdmin --policy-document file://aws/policies/infra_admin.json --profile bahmni-india
+aws iam create-policy --policy-name BahmniInfraAdmin --policy-document file://aws/policies/BahmniInfraAdmin.json --profile bahmni-india
 ```
 
 If you need to update an existing policy
@@ -105,7 +112,33 @@ aws iam delete-policy-version --policy-arn arn:aws:iam::{YourAccountNumber}:poli
 
 4) Apply policy changes to recate a new revision
 ```
-aws iam create-policy-version --policy-arn arn:aws:iam::863324974761:policy/BahmniInfraAdmin --policy-document file://aws/policies/infra_admin.json --set-as-default --profile bahmni-india-admin
+aws iam create-policy-version --policy-arn arn:aws:iam::{YourAccountNumber}:policy/BahmniInfraAdmin --policy-document file://aws/policies/BahmniInfraAdmin.json --set-as-default --profile bahmni-india-admin
+```
+
+## Adding and updating roles in AWS
+`aws/roles` folder contains all custom roles created in AWS account. Below CLI assumes that your local aws profile is named `bahmni-india` - please change it accordingly or remove it if you have set `export AWS_PROFILE=your-profile`
+
+>⚠️ Note: you will need to replace {YourAccountNumber} with your account number in CLI and in the policy documents. Remember to not check in your account number to public github repositories
+- `BahmniInfraAdminRoleForIAMUsers.json` Role that can be assumed and have BahmniInfraAdmin policy permissions
+
+Create Role with trust policy (first time)
+```
+aws iam create-role --role-name BahmniInfraAdminRoleForIAMUsers --assume-role-policy-document file://aws/roles/BahmniInfraAdminRoleForIAMUsers.json
+```
+
+Get Role (verify)
+```
+aws iam get-role --role-name BahmniInfraAdminRoleForIAMUsers
+```
+
+If you need to update Role Trust policy
+```
+aws iam update-assume-role-policy --role-name BahmniInfraAdminRoleForIAMUsers --policy-document file://aws/roles/BahmniInfraAdminRoleForIAMUsers.json
+```
+
+Attaching permission policies e.g. BahmniInfraAdmin to IAM Role (first time)
+```
+aws iam attach-role-policy --policy-arn arn:aws:iam::{YourAccountNumber}:policy/BahmniInfraAdmin --role-name BahmniInfraAdminRoleForIAMUsers
 ```
 
 ## Creating shared (base) resources
