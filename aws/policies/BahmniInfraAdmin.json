@@ -135,6 +135,7 @@
               "iam:PassRole",
               "iam:AttachRolePolicy",
               "iam:DetachRolePolicy",
+              "iam:PutRolePolicy",
               "iam:DeletePolicyVersion",
               "iam:ListInstanceProfilesForRole",
               "iam:DeleteRole",
