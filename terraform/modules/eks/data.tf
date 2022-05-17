@@ -37,14 +37,3 @@ data "aws_subnets" "public_subnets" {
   }
 }
 
-data "aws_caller_identity" "current_account_info" {}
-
-data "aws_iam_policy_document" "assume_role_iam_users_policy_document" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    principals {
-      identifiers = [data.aws_caller_identity.current_account_info.account_id]
-      type        = "AWS"
-    }
-  }
-}
