@@ -87,7 +87,9 @@
               "ec2:RevokeSecurityGroupEgress",
               "ec2:RunInstances",
               "ec2:ReleaseAddress",
-              "ec2:TerminateInstances"
+              "ec2:TerminateInstances",
+              "ec2:StopInstances",
+              "ec2:StartInstances"
           ],
           "Resource": "*",
           "Condition": {
