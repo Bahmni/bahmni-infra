@@ -109,7 +109,9 @@
               "rds:DescribeDBInstances",
               "rds:CreateDBInstance",
               "rds:DeleteDBInstance",
-              "rds:DeleteDBSubnetGroup"
+              "rds:DeleteDBSubnetGroup",
+              "rds:StopDBInstance",
+              "rds:StartDBInstance"
           ],
           "Resource": "*",
           "Condition": {
