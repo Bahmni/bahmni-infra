@@ -1,0 +1,43 @@
+name: Start EKS Node Group & RDS in AWS
+
+on:
+  schedule:
+    # Runs "At 10:00 AM on every day-of-week from Monday through Friday." (see https://crontab.guru)
+    - cron: '0 10 * * 1-5'
+
+jobs:
+  start-resources:
+    name: Start EKS nodegroup & RDS
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.BAHMNI_AWS_ID }}
+          aws-secret-access-key: ${{ secrets.BAHMNI_AWS_SECRET }}
+          aws-region: ap-south-1
+          role-to-assume: ${{ secrets.BAHMNI_INFRA_ADMIN_ROLE }}
+          role-duration-seconds: 1200  # 20 mins
+          role-session-name: BahmniInfraAdminSession
+
+      - name: start RDS instance for dev
+        run: |
+          aws rds start-db-instance --db-instance-identifier bahmni-rds-dev > /dev/null 2>&1
+
+      - name: Wait 5 mins for RDS to start
+        run: sleep 300s
+        shell: bash
+
+      - name: start EKS Node Group for dev
+        run: |
+          aws eks update-nodegroup-config  \
+          --cluster-name=bahmni-cluster-dev  \
+          --nodegroup-name=node-group-dev  \
+          --scaling-config minSize=1,maxSize=1,desiredSize=1 > /dev/null 2>&1
+
+      - name: Post Deployment Status To Slack
+        run: |
+          curl -X POST -H 'Content-type: application/json' --data '{"text":":white_check_mark:  Good Morning, EKS Node Group & RDS Instance started & will be available in 5 minutes"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+
+
+
