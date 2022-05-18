@@ -1,6 +1,6 @@
 resource "aws_instance" "bastion" {
   ami                         = data.aws_ami.amazon_linux_2.id
-  instance_type               = "t3.micro"
+  instance_type               = "t2.micro"
   vpc_security_group_ids      = [aws_security_group.bastion.id]
   associate_public_ip_address = true
   subnet_id                   = data.aws_subnets.public_subnets.ids[0]
