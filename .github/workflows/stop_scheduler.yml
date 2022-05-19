@@ -33,5 +33,5 @@ jobs:
 
       - name: Post Deployment Status To Slack
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":":white_check_mark:  Good Evening, EKS Node Group & RDS Instance stopped for the day"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+          curl -X POST -H 'Content-type: application/json' --data '{"text":":white_check_mark:  Hello, EKS Node Group & RDS Instance stopped for the day"}' ${{ secrets.SLACK_WEBHOOK_URL }}
 

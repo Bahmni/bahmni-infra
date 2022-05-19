@@ -3,8 +3,8 @@ name: Start EKS Node Group & RDS in AWS
 on:
   workflow_dispatch:
   schedule:
-    # Runs "At 10:00 AM on every day-of-week from Monday through Friday. Below time is mentioned in UTC time zone" (see https://crontab.guru)
-    - cron: '30 04 * * 1-5'
+    # Runs "At 09:00 AM on every day-of-week from Monday through Friday. Below time is mentioned in UTC time zone" (see https://crontab.guru)
+    - cron: '30 03 * * 1-5'
 
 jobs:
   start-resources:
@@ -38,7 +38,7 @@ jobs:
 
       - name: Post Deployment Status To Slack
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":":white_check_mark:  Good Morning, EKS Node Group & RDS Instance started & will be available in 5 minutes"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+          curl -X POST -H 'Content-type: application/json' --data '{"text":":white_check_mark:  Hello, EKS Node Group & RDS Instance started & will be available in 5 minutes"}' ${{ secrets.SLACK_WEBHOOK_URL }}
 
 
 
