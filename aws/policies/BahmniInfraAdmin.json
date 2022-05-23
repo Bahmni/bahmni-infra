@@ -161,6 +161,15 @@
                   ]
               }
           }
+      },
+      {
+          "Sid": "Route53",
+          "Effect": "Allow",
+          "Action": [
+              "route53:ChangeResourceRecordSets",
+              "route53:ListResourceRecordSets"
+          ],
+          "Resource": "*"
       }
   ]
 }
