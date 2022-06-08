@@ -2,9 +2,9 @@ name: Stop EKS Node Group & RDS in AWS
 
 on:
   workflow_dispatch:
-#  schedule:
-#    # Runs "At 08:00 PM on every day-of-week from Monday through Friday. Below time is mentioned in UTC time zone" (see https://crontab.guru)
-#    - cron: '30 14 * * 1-5'
+  schedule:
+    # Runs "At 08:00 PM on every day-of-week from Monday through Friday. Below time is mentioned in UTC time zone" (see https://crontab.guru)
+    - cron: '30 14 * * 1-5'
 
 jobs:
   stop-resources:
