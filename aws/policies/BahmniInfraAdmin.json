@@ -132,6 +132,7 @@
               "iam:DetachGroupPolicy",
               "iam:CreatePolicies",
               "iam:CreateRole",
+              "iam:CreateGroup",
               "iam:CreatePolicy",
               "iam:CreatePolicyVersion",
               "iam:Get*",
