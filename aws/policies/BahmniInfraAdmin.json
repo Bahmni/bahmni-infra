@@ -140,6 +140,7 @@
               "iam:PassRole",
               "iam:AttachRolePolicy",
               "iam:DetachRolePolicy",
+              "iam:DeleteRolePolicy",
               "iam:PutRolePolicy",
               "iam:DeletePolicyVersion",
               "iam:ListInstanceProfilesForRole",
