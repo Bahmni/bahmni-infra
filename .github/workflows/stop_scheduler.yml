@@ -20,14 +20,14 @@ jobs:
           role-to-assume: ${{ secrets.BAHMNI_INFRA_ADMIN_ROLE }}
           role-duration-seconds: 1200  # 20 mins
           role-session-name: BahmniInfraAdminSession
-      - name: Stop EKS Node Group for dev
+      - name: Stop EKS Node for Non-Prod Cluster
         run: |
           aws eks update-nodegroup-config  \
           --cluster-name=bahmni-cluster-dev  \
           --nodegroup-name=node-group-dev  \
           --scaling-config minSize=0,maxSize=1,desiredSize=0  > /dev/null 2>&1
 
-      - name: Stop RDS instance for dev
+      - name: Stop Non-Prod RDS Instance
         run: |
           aws rds stop-db-instance --db-instance-identifier bahmni-rds-dev > /dev/null 2>&1
 

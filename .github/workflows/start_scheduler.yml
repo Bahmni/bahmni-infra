@@ -21,18 +21,18 @@ jobs:
           role-duration-seconds: 1200  # 20 mins
           role-session-name: BahmniInfraAdminSession
 
-      - name: start RDS instance for dev
+      - name: Start Non-Prod RDS Instance
         run: |
-          aws rds start-db-instance --db-instance-identifier bahmni-rds-dev > /dev/null 2>&1
+          aws rds start-db-instance --db-instance-identifier bahmni-rds-non-prod > /dev/null 2>&1
 
       - name: Wait 5 mins for RDS to start
         run: sleep 300s
         shell: bash
 
-      - name: start EKS Node Group for dev
+      - name: Start EKS Node for Non-Prod Cluster
         run: |
           aws eks update-nodegroup-config  \
-          --cluster-name=bahmni-cluster-dev  \
+          --cluster-name=bahmni-cluster-non-prod  \
           --nodegroup-name=node-group-dev  \
           --scaling-config minSize=1,maxSize=1,desiredSize=1 > /dev/null 2>&1
 
