@@ -13,4 +13,5 @@ ami_name                   = "amzn2-ami-kernel-5.10-hvm-2.0.20220316.0-x86_64-gp
 rds_instance_class         = "db.t3.xlarge"
 mysql_version              = "5.7"
 mysql_rds_port             = "3306"
-#bastion_public_access_cidr = "0.0.0.0/0"
+enable_bastion_host        = false
+bastion_public_access_cidr = "0.0.0.0/0"

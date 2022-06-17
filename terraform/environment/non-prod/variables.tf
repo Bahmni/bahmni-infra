@@ -75,7 +75,12 @@ variable "mysql_rds_port" {
   description = "RDS Port for MySQL Instance"
 }
 
-#variable "bastion_public_access_cidr" {
-#  type        = string
-#  description = "CIDR Block used for SSH Access of Bastion Host"
-#}
+variable "enable_bastion_host" {
+  type        = bool
+  description = "Toggle for Bastion Host"
+}
+
+variable "bastion_public_access_cidr" {
+  type        = string
+  description = "CIDR Block used for SSH Access of Bastion Host"
+}

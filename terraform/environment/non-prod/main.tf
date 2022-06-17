@@ -51,9 +51,10 @@ module "non_prod_rds" {
   rds_instance_class = var.rds_instance_class
 }
 
-#module "non_prod_bastion" {
-#  source                   = "../../modules/bastion_host"
-#  depends_on               = [module.non_prod_vpc]
-#  vpc_suffix               = var.environment
-#  public_access_cidr_block = var.bastion_public_access_cidr
-#}
+module "non_prod_bastion" {
+  source                   = "../../modules/bastion_host"
+  count                    = var.enable_bastion_host ? 1 : 0
+  depends_on               = [module.non_prod_vpc]
+  vpc_suffix               = var.environment
+  public_access_cidr_block = var.bastion_public_access_cidr
+}
