@@ -67,28 +67,11 @@ jobs:
           role-to-assume: ${{ secrets.BAHMNI_INFRA_ADMIN_ROLE }}
           role-duration-seconds: 1200  # 20 mins
           role-session-name: BahmniInfraAdminSession
-      - name: Provision shared resources
+      - name: Provision resources for nonprod
         run: |
-          cd terraform/shared/
-          terraform init -backend-config=../config.s3.tfbackend
-          terraform apply -auto-approve
-          echo "READ_ONLY_ACCESS_ROLE_ARN=$(terraform output -raw eks_read_only_access_role_arn)" >> $GITHUB_ENV
-      - name: Provision resources for dev
-        run: |
-          cd terraform/environment/dev/
-          terraform init -backend-config=../../config.s3.tfbackend
-          terraform apply -auto-approve
-          echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> $GITHUB_ENV
-      - name: Setup User Access for Cluster
-        run: |
-          aws eks update-kubeconfig --name $CLUSTER_NAME
-          kubectl apply -f k8s-rbac/read-only.yaml
-          eksctl create iamidentitymapping \
-          --cluster $CLUSTER_NAME \
-          --arn $READ_ONLY_ACCESS_ROLE_ARN \
-          --group read-only-access-group \
-          --username assume-role-user \
-          --no-duplicate-arns
+          cd terraform/
+          terraform init -backend-config=config.s3.tfbackend -backend-config='key=nonprod/terraform.tfstate'
+          terraform apply -var-file=nonprod.tfvars -auto-approve 
 
   slack-workflow-status:
     name: Notify on Slack

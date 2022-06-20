@@ -1,7 +1,34 @@
+variable "availability_zones" {
+  type        = list(string)
+  description = "Availability Zone for creating the resource"
+}
+
+variable "environment" {
+  type        = string
+  description = "Name of the environment with which resource names would be suffixed"
+}
+
 variable "owner" {
   type        = string
-  description = "Owner name used for tagging resources"
+  description = "Owner name for resource tags"
 }
+
+variable "private_cidr_blocks" {
+  type        = list(string)
+  description = "CIDR Blocks used for private subnets"
+}
+
+variable "public_cidr_blocks" {
+  type        = list(string)
+  description = "CIDR Blocks used for public subnets"
+}
+
+variable "vpc_cidr_block" {
+  type        = string
+  description = "CIDR Block used for VPC"
+}
+
+
 
 variable "desired_num_of_nodes" {
   type        = number
@@ -30,7 +57,7 @@ variable "node_instance_type" {
 
 variable "vpc_suffix" {
   type        = string
-  description = "Suffix Value for VPC related resources (Ex: prod,non-prod)"
+  description = "Suffix Value for VPC related resources (Ex: prod,nonprod)"
 }
 
 variable "mysql_version" {
@@ -46,4 +73,14 @@ variable "rds_instance_class" {
 variable "mysql_rds_port" {
   type        = string
   description = "RDS Port for MySQL Instance"
+}
+
+variable "enable_bastion_host" {
+  type        = bool
+  description = "Toggle for Bastion Host"
+}
+
+variable "bastion_public_access_cidr" {
+  type        = string
+  description = "CIDR Block used for SSH Access of Bastion Host"
 }

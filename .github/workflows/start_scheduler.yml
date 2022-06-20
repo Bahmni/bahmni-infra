@@ -10,6 +10,8 @@ jobs:
   start-resources:
     name: Start EKS nodegroup & RDS
     runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: nonprod
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -21,19 +23,19 @@ jobs:
           role-duration-seconds: 1200  # 20 mins
           role-session-name: BahmniInfraAdminSession
 
-      - name: start RDS instance for dev
+      - name: Start ${{ env.ENVIRONMENT }} RDS Instance
         run: |
-          aws rds start-db-instance --db-instance-identifier bahmni-rds-dev > /dev/null 2>&1
+          aws rds start-db-instance --db-instance-identifier bahmni-rds-${{ env.ENVIRONMENT }} > /dev/null 2>&1
 
       - name: Wait 5 mins for RDS to start
         run: sleep 300s
         shell: bash
 
-      - name: start EKS Node Group for dev
+      - name: Start EKS Node for ${{ env.ENVIRONMENT }} Cluster
         run: |
           aws eks update-nodegroup-config  \
-          --cluster-name=bahmni-cluster-dev  \
-          --nodegroup-name=node-group-dev  \
+          --cluster-name=bahmni-cluster-${{ env.ENVIRONMENT }}  \
+          --nodegroup-name=node-group-${{ env.ENVIRONMENT }}  \
           --scaling-config minSize=1,maxSize=1,desiredSize=1 > /dev/null 2>&1
 
       - name: Post Deployment Status To Slack
