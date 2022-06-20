@@ -11,7 +11,7 @@ jobs:
     name: Stop EKS nodegroup & RDS
     runs-on: ubuntu-latest
     env:
-      ENVIRONMENT: non-prod
+      ENVIRONMENT: nonprod
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1

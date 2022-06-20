@@ -10,7 +10,7 @@ variable "owner" {
 
 variable "vpc_suffix" {
   type        = string
-  description = "Suffix Value for VPC related resources (Ex: prod,non-prod)"
+  description = "Suffix Value for VPC related resources (Ex: prod,nonprod)"
 }
 
 variable "private_cidr_blocks" {

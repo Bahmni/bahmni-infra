@@ -57,7 +57,7 @@ variable "node_instance_type" {
 
 variable "vpc_suffix" {
   type        = string
-  description = "Suffix Value for VPC related resources (Ex: prod,non-prod)"
+  description = "Suffix Value for VPC related resources (Ex: prod,nonprod)"
 }
 
 variable "mysql_version" {

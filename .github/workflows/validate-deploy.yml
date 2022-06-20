@@ -67,11 +67,11 @@ jobs:
           role-to-assume: ${{ secrets.BAHMNI_INFRA_ADMIN_ROLE }}
           role-duration-seconds: 1200  # 20 mins
           role-session-name: BahmniInfraAdminSession
-      - name: Provision resources for non-prod
+      - name: Provision resources for nonprod
         run: |
           cd terraform/
-          terraform init -backend-config=config.s3.tfbackend -backend-config='key=non-prod/terraform.tfstate'
-          terraform apply -var-file=non-prod.tfvars -auto-approve 
+          terraform init -backend-config=config.s3.tfbackend -backend-config='key=nonprod/terraform.tfstate'
+          terraform apply -var-file=nonprod.tfvars -auto-approve 
 
   slack-workflow-status:
     name: Notify on Slack
