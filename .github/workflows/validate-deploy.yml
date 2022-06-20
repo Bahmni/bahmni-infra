@@ -72,7 +72,6 @@ jobs:
           cd terraform/environment/non-prod/
           terraform init -backend-config=../../config.s3.tfbackend
           terraform apply -auto-approve
-          echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> $GITHUB_ENV
 
   slack-workflow-status:
     name: Notify on Slack
