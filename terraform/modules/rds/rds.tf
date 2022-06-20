@@ -1,9 +1,9 @@
 resource "aws_db_subnet_group" "mysql-subnet" {
-  name       = "mysql-subnet-group"
+  name       = "mysql-subnet-group-${var.environment}"
   subnet_ids = data.aws_subnets.private_subnets.ids
 
   tags = {
-    Name = "Bahmni MySQL DB Subnet"
+    Name = "Bahmni MySQL DB Subnet for ${var.environment}"
   }
 }
 
