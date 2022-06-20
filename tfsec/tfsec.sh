@@ -13,13 +13,10 @@ run_scan(){
     terraform_init
 
     echo -e "${GREEN_COLOR}TFSec Scanning $folder....$NO_COLOR"
-    tfsec --config-file $SCRIPT_DIR/tfsec.yml --tfvars-file=terraform.tfvars --verbose
+    tfsec --config-file $SCRIPT_DIR/tfsec.yml --tfvars-file=non-prod.tfvars --verbose
 
     cd - > /dev/null
     echo -e "\n"
 }
 
-for folder in terraform/environment/*
-do
-    run_scan $folder
-done;
+run_scan terraform/

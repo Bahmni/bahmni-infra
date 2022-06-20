@@ -25,7 +25,4 @@ run_scan(){
     echo -e "\n"
 }
 
-for folder in terraform/environment/*
-do
-    run_scan $folder
-done;
+run_scan terraform/

@@ -23,7 +23,4 @@ run_validate(){
     echo -e "\n"
 }
 
-for folder in terraform/environment/*
-do
-    run_validate $folder
-done;
+run_validate terraform/

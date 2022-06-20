@@ -69,9 +69,9 @@ jobs:
           role-session-name: BahmniInfraAdminSession
       - name: Provision resources for non-prod
         run: |
-          cd terraform/environment/non-prod/
-          terraform init -backend-config=../../config.s3.tfbackend
-          terraform apply -auto-approve
+          cd terraform/
+          terraform init -backend-config=config.s3.tfbackend -backend-config='key=non-prod/terraform.tfstate'
+          terraform apply -var-file=non-prod.tfvars -auto-approve 
 
   slack-workflow-status:
     name: Notify on Slack
