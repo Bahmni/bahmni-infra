@@ -10,6 +10,8 @@ jobs:
   stop-resources:
     name: Stop EKS nodegroup & RDS
     runs-on: ubuntu-latest
+    env:
+      ENVIRONMENT: non-prod
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -20,16 +22,16 @@ jobs:
           role-to-assume: ${{ secrets.BAHMNI_INFRA_ADMIN_ROLE }}
           role-duration-seconds: 1200  # 20 mins
           role-session-name: BahmniInfraAdminSession
-      - name: Stop EKS Node for Non-Prod Cluster
+      - name: Stop EKS Node for ${{ env.ENVIRONMENT }} Cluster
         run: |
           aws eks update-nodegroup-config  \
-          --cluster-name=bahmni-cluster-dev  \
-          --nodegroup-name=node-group-dev  \
+          --cluster-name=bahmni-cluster-${{ env.ENVIRONMENT }}  \
+          --nodegroup-name=node-group-${{ env.ENVIRONMENT }}  \
           --scaling-config minSize=0,maxSize=1,desiredSize=0  > /dev/null 2>&1
 
-      - name: Stop Non-Prod RDS Instance
+      - name: Stop ${{ env.ENVIRONMENT }} RDS Instance
         run: |
-          aws rds stop-db-instance --db-instance-identifier bahmni-rds-dev > /dev/null 2>&1
+          aws rds stop-db-instance --db-instance-identifier bahmni-rds-${{ env.ENVIRONMENT }} > /dev/null 2>&1
 
       - name: Post Deployment Status To Slack
         run: |
