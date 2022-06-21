@@ -56,8 +56,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Install eksctl
-        run: brew install weaveworks/tap/eksctl
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

@@ -19,7 +19,7 @@ terraform {
 
 module "vpc" {
   source              = "./modules/vpc"
-  vpc_suffix          = var.environment
+  vpc_suffix          = var.vpc_suffix
   availability_zones  = var.availability_zones
   owner               = var.owner
   private_cidr_blocks = var.private_cidr_blocks
@@ -54,6 +54,6 @@ module "bastion" {
   source                   = "./modules/bastion_host"
   count                    = var.enable_bastion_host ? 1 : 0
   depends_on               = [module.vpc]
-  vpc_suffix               = var.environment
+  vpc_suffix               = var.vpc_suffix
   public_access_cidr_block = var.bastion_public_access_cidr
 }
