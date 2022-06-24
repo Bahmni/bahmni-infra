@@ -49,6 +49,13 @@ module "rds" {
   mysql_version      = var.mysql_version
   rds_instance_class = var.rds_instance_class
 }
+module "efs" {
+  source                   = "./modules/efs"
+  depends_on               = [module.vpc]
+  environment              = var.environment
+  vpc_suffix               = var.vpc_suffix
+  private_cidr_blocks      = var.private_cidr_blocks
+}
 
 module "bastion" {
   source                   = "./modules/bastion_host"

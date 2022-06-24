@@ -2,7 +2,7 @@ name: Validate and Deploy to AWS
 
 on:
   push:
-    branches: [ main ]
+    branches: [ BAH-1881 ]
     paths-ignore:
       - 'README.md'
 
@@ -71,18 +71,18 @@ jobs:
           terraform init -backend-config=config.s3.tfbackend -backend-config='key=nonprod/terraform.tfstate'
           terraform apply -var-file=nonprod.tfvars -auto-approve 
 
-  slack-workflow-status:
-    name: Notify on Slack
-    if: ${{ always() }}
-    needs: [ tfapply ]
-    runs-on: ubuntu-latest
-    env:
-      STATUS: ${{ (needs.tfapply.result == 'success') && 'success' || 'failure' }}
-    steps:
-      - name: Slack notification
-        uses: 8398a7/action-slack@v3
-        with:
-          status: ${{ env.STATUS }}
-          fields: message,author,workflow,repo 
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+#  slack-workflow-status:
+#    name: Notify on Slack
+#    if: ${{ always() }}
+#    needs: [ tfapply ]
+#    runs-on: ubuntu-latest
+#    env:
+#      STATUS: ${{ (needs.tfapply.result == 'success') && 'success' || 'failure' }}
+#    steps:
+#      - name: Slack notification
+#        uses: 8398a7/action-slack@v3
+#        with:
+#          status: ${{ env.STATUS }}
+#          fields: message,author,workflow,repo
+#        env:
+#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
