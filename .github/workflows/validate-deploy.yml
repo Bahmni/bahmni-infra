@@ -53,6 +53,9 @@ jobs:
     needs: [ terrascan, tflint, tfsec, tfvalidate ]
     if: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfvalidate.result == 'success') && (needs.tfsec.result == 'success') }}
     runs-on: ubuntu-latest
+    env:
+      CLUSTER_NAME: bahmni-cluster-nonprod
+      SC_NAME: bahmni-efs-sc
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -70,6 +73,23 @@ jobs:
           cd terraform/
           terraform init -backend-config=config.s3.tfbackend -backend-config='key=nonprod/terraform.tfstate'
           terraform apply -var-file=nonprod.tfvars -auto-approve 
+      - name: Setup Amazon EFS driver and StorageClass
+        run: |
+          fileSystemId=$(aws ssm get-parameter --with-decryption --name "/nonprod/efs/file_system_id" --query "Parameter.Value" --output text)
+          aws eks update-kubeconfig --name $CLUSTER_NAME
+          helm repo add aws-efs-csi-driver https://kubernetes-sigs.github.io/aws-efs-csi-driver/
+          helm repo update
+          curl -o storageclass.yaml \
+          https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/master/examples/kubernetes/dynamic_provisioning/specs/storageclass.yaml
+          scName=$SC_NAME  yq -i e '.metadata.name |= env(scName)' storageclass.yaml
+          fileSystemId=$fileSystemId  yq -i e '.parameters.fileSystemId |= env(fileSystemId)' storageclass.yaml
+          helm upgrade -i aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver \
+          --namespace kube-system \
+          --set image.repository=602401143452.dkr.ecr.ap-south-1.amazonaws.com/eks/aws-efs-csi-driver \
+          --set controller.serviceAccount.create=false \
+          --set controller.serviceAccount.name=efs-csi-controller-sa
+          kubectl apply -f storageclass.yaml
+
 
 #  slack-workflow-status:
 #    name: Notify on Slack
