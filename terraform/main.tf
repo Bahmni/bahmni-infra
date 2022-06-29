@@ -27,9 +27,17 @@ module "vpc" {
   vpc_cidr_block      = var.vpc_cidr_block
 }
 
+module "efs" {
+  source                   = "./modules/efs"
+  depends_on               = [module.vpc]
+  environment              = var.environment
+  vpc_suffix               = var.vpc_suffix
+  private_cidr_blocks      = var.private_cidr_blocks
+}
+
 module "eks" {
   source               = "./modules/eks"
-  depends_on           = [module.vpc]
+  depends_on           = [module.vpc,module.efs]
   environment          = var.environment
   owner                = var.owner
   vpc_suffix           = var.vpc_suffix
@@ -38,6 +46,7 @@ module "eks" {
   max_num_of_nodes     = var.max_num_of_nodes
   min_num_of_nodes     = var.min_num_of_nodes
   node_instance_type   = var.node_instance_type
+  efs_file_system_arn  = module.efs.efs-file-system-arn
 }
 
 module "rds" {
@@ -48,13 +57,6 @@ module "rds" {
   mysql_rds_port     = var.mysql_rds_port
   mysql_version      = var.mysql_version
   rds_instance_class = var.rds_instance_class
-}
-module "efs" {
-  source                   = "./modules/efs"
-  depends_on               = [module.vpc]
-  environment              = var.environment
-  vpc_suffix               = var.vpc_suffix
-  private_cidr_blocks      = var.private_cidr_blocks
 }
 
 module "bastion" {

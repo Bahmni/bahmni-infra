@@ -3,6 +3,12 @@ variable "environment" {
   description = "Environment Value used to create and tag resources"
 }
 
+variable "efs_file_system_arn" {
+  type = string
+  description = "EFS File System ARN"
+  sensitive   = true
+}
+
 variable "owner" {
   type        = string
   description = "Owner name used for tagging resources"
