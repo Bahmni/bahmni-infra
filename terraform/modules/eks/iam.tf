@@ -1,5 +1,4 @@
 ## IAM Roles and policies for Node
-
 resource "aws_iam_role" "node-role" {
   name = "BahmniEKSNodeRole-${var.environment}"
 
@@ -13,6 +12,47 @@ resource "aws_iam_role" "node-role" {
     }]
     Version = "2012-10-17"
   })
+
+  inline_policy {
+    name = "aws-efs-csi-driver-policy"
+
+    policy = jsonencode({
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "elasticfilesystem:DescribeAccessPoints",
+            "elasticfilesystem:DescribeFileSystems",
+            "elasticfilesystem:DescribeMountTargets",
+          ],
+          "Resource": var.efs_file_system_arn
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+            "elasticfilesystem:CreateAccessPoint"
+          ],
+          "Resource": var.efs_file_system_arn,
+          "Condition": {
+            "StringLike": {
+              "aws:RequestTag/efs.csi.aws.com/cluster": "true"
+            }
+          }
+        },
+        {
+          "Effect": "Allow",
+          "Action": "elasticfilesystem:DeleteAccessPoint",
+          "Resource": var.efs_file_system_arn,
+          "Condition": {
+            "StringEquals": {
+              "aws:ResourceTag/efs.csi.aws.com/cluster": "true"
+            }
+          }
+        }
+      ]
+    })
+  }
 
   tags = {
     Name  = "BahmniEKSNodeRole-${var.environment}"

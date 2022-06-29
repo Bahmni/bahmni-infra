@@ -180,39 +180,19 @@
           "Resource": "*"
       },
       {
+          "Sid": "EFS",
           "Effect": "Allow",
           "Action": [
-              "elasticfilesystem:DescribeAccessPoints",
+              "elasticfilesystem:CreateFileSystem",
               "elasticfilesystem:DescribeFileSystems",
-              "elasticfilesystem:DescribeMountTargets",
-              "elasticfilesystem:DeleteMountTarget",
-              "ec2:DescribeAvailabilityZones",
               "elasticfilesystem:DeleteFileSystem",
-              "elasticfilesystem:CreateFileSystem"
+              "elasticfilesystem:DescribeLifecycleConfiguration",
+              "elasticfilesystem:CreateMountTarget",
+              "elasticfilesystem:DescribeMountTargets",
+              "elasticfilesystem:DescribeMountTargetSecurityGroups",
+              "elasticfilesystem:DeleteMountTarget"
           ],
           "Resource": "*"
-      },
-      {
-          "Effect": "Allow",
-          "Action": [
-              "elasticfilesystem:CreateAccessPoint"
-          ],
-          "Resource": "*",
-          "Condition": {
-              "StringLike": {
-                  "aws:RequestTag/efs.csi.aws.com/cluster": "true"
-              }
-          }
-      },
-      {
-          "Effect": "Allow",
-          "Action": "elasticfilesystem:DeleteAccessPoint",
-          "Resource": "*",
-          "Condition": {
-              "StringEquals": {
-                  "aws:ResourceTag/efs.csi.aws.com/cluster": "true"
-              }
-          }
       }
   ]
 }

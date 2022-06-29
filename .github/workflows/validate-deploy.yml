@@ -2,7 +2,7 @@ name: Validate and Deploy to AWS
 
 on:
   push:
-    branches: [ BAH-1881 ]
+    branches: [ main ]
     paths-ignore:
       - 'README.md'
 
@@ -48,13 +48,12 @@ jobs:
       - name: Terraform Validate
         run: ./terraform/tf-validate.sh
 
-  tfapply:
-    name: Terraform Apply
+  provision-resources:
+    name: Provision Resources
     needs: [ terrascan, tflint, tfsec, tfvalidate ]
     if: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfvalidate.result == 'success') && (needs.tfsec.result == 'success') }}
     runs-on: ubuntu-latest
     env:
-      CLUSTER_NAME: bahmni-cluster-nonprod
       SC_NAME: bahmni-efs-sc
     steps:
       - name: Checkout repository
@@ -73,36 +72,35 @@ jobs:
           cd terraform/
           terraform init -backend-config=config.s3.tfbackend -backend-config='key=nonprod/terraform.tfstate'
           terraform apply -var-file=nonprod.tfvars -auto-approve 
+          echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> $GITHUB_ENV
       - name: Setup Amazon EFS driver and StorageClass
         run: |
           fileSystemId=$(aws ssm get-parameter --with-decryption --name "/nonprod/efs/file_system_id" --query "Parameter.Value" --output text)
           aws eks update-kubeconfig --name $CLUSTER_NAME
-          helm repo add aws-efs-csi-driver https://kubernetes-sigs.github.io/aws-efs-csi-driver/
-          helm repo update
+          kubectl kustomize \
+          "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.3" > public-ecr-driver.yaml
           curl -o storageclass.yaml \
           https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/master/examples/kubernetes/dynamic_provisioning/specs/storageclass.yaml
+          kubectl delete deployment efs-csi-controller -n kube-system || echo "Creating the deployment..."
+          kubectl delete daemonset efs-csi-node -n kube-system || echo "Creating the daemonset..."
           scName=$SC_NAME  yq -i e '.metadata.name |= env(scName)' storageclass.yaml
           fileSystemId=$fileSystemId  yq -i e '.parameters.fileSystemId |= env(fileSystemId)' storageclass.yaml
-          helm upgrade -i aws-efs-csi-driver aws-efs-csi-driver/aws-efs-csi-driver \
-          --namespace kube-system \
-          --set image.repository=602401143452.dkr.ecr.ap-south-1.amazonaws.com/eks/aws-efs-csi-driver \
-          --set controller.serviceAccount.create=false \
-          --set controller.serviceAccount.name=efs-csi-controller-sa
+          kubectl apply -f public-ecr-driver.yaml
           kubectl apply -f storageclass.yaml
 
 
-#  slack-workflow-status:
-#    name: Notify on Slack
-#    if: ${{ always() }}
-#    needs: [ tfapply ]
-#    runs-on: ubuntu-latest
-#    env:
-#      STATUS: ${{ (needs.tfapply.result == 'success') && 'success' || 'failure' }}
-#    steps:
-#      - name: Slack notification
-#        uses: 8398a7/action-slack@v3
-#        with:
-#          status: ${{ env.STATUS }}
-#          fields: message,author,workflow,repo
-#        env:
-#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  slack-workflow-status:
+    name: Notify on Slack
+    if: ${{ always() }}
+    needs: [ provision-resources ]
+    runs-on: ubuntu-latest
+    env:
+      STATUS: ${{ (needs.tfapply.result == 'success') && 'success' || 'failure' }}
+    steps:
+      - name: Slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ env.STATUS }}
+          fields: message,author,workflow,repo
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
