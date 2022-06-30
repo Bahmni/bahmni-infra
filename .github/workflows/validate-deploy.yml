@@ -54,7 +54,7 @@ jobs:
     if: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfvalidate.result == 'success') && (needs.tfsec.result == 'success') }}
     runs-on: ubuntu-latest
     env:
-      SC_NAME: bahmni-efs-sc
+      STORAGE_CLASS_NAME: bahmni-efs-sc
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
