@@ -83,8 +83,8 @@ jobs:
           https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/master/examples/kubernetes/dynamic_provisioning/specs/storageclass.yaml
           kubectl delete deployment efs-csi-controller -n kube-system || echo "Creating the deployment..."
           kubectl delete daemonset efs-csi-node -n kube-system || echo "Creating the daemonset..."
-          scName=$SC_NAME  yq -i e '.metadata.name |= env(scName)' storageclass.yaml
-          fileSystemId=$fileSystemId  yq -i e '.parameters.fileSystemId |= env(fileSystemId)' storageclass.yaml
+          yq eval ".metadata.name = \"$STORAGE_CLASS_NAME\"" -i storageclass.yaml
+          yq eval ".parameters.fileSystemId  = \"$fileSystemId\"" -i storageclass.yaml
           kubectl apply -f public-ecr-driver.yaml
           kubectl apply -f storageclass.yaml
 
