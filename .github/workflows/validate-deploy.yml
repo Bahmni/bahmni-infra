@@ -95,7 +95,7 @@ jobs:
     needs: [ provision-resources ]
     runs-on: ubuntu-latest
     env:
-      STATUS: ${{ (needs.tfapply.result == 'success') && 'success' || 'failure' }}
+      STATUS: ${{ (needs.provision-resources.result == 'success') && 'success' || 'failure' }}
     steps:
       - name: Slack notification
         uses: 8398a7/action-slack@v3
