@@ -37,3 +37,48 @@ data "aws_subnets" "public_subnets" {
   }
 }
 
+data "aws_iam_policy_document" "efs-csi-driver-policy" {
+  statement {
+    actions = [
+      "elasticfilesystem:DescribeAccessPoints",
+      "elasticfilesystem:DescribeFileSystems",
+      "elasticfilesystem:DescribeMountTargets",
+    ]
+
+    resources = [
+      var.efs_file_system_arn
+    ]
+  }
+
+  statement {
+    actions = [
+      "elasticfilesystem:CreateAccessPoint"
+    ]
+
+    resources = [
+      var.efs_file_system_arn,
+    ]
+
+    condition {
+      test     = "StringLike"
+      variable = "aws:RequestTag/efs.csi.aws.com/cluster"
+      values = ["true"]
+    }
+  }
+
+  statement {
+    actions = [
+      "elasticfilesystem:DeleteAccessPoint"
+    ]
+
+    resources = [
+      var.efs_file_system_arn,
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "aws:ResourceTag/efs.csi.aws.com/cluster"
+      values = ["true"]
+    }
+  }
+}
