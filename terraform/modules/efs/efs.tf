@@ -23,6 +23,6 @@ resource "aws_efs_mount_target" "bahmni-efs-mt-2" {
 resource "aws_ssm_parameter" "efs_file_system_id" {
   name        = "/${var.environment}/efs/file_system_id"
   description = "File system id for EFS ${var.environment}"
-  type        = "SecureString"
+  type        = "String"
   value       = aws_efs_file_system.bahmni-efs.id
 }
