@@ -37,7 +37,7 @@ module "efs" {
 
 module "eks" {
   source               = "./modules/eks"
-  depends_on           = [module.vpc,module.efs]
+  depends_on           = [module.vpc]
   environment          = var.environment
   owner                = var.owner
   vpc_suffix           = var.vpc_suffix
