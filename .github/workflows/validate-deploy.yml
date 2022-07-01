@@ -2,7 +2,7 @@ name: Validate and Deploy to AWS
 
 on:
   push:
-    branches: [ main ]
+    branches: [ BAH-1881 ]
     paths-ignore:
       - 'README.md'
 
@@ -53,8 +53,6 @@ jobs:
     needs: [ terrascan, tflint, tfsec, tfvalidate ]
     if: ${{ (needs.terrascan.result == 'success') && (needs.tflint.result == 'success') && (needs.tfvalidate.result == 'success') && (needs.tfsec.result == 'success') }}
     runs-on: ubuntu-latest
-    env:
-      STORAGE_CLASS_NAME: bahmni-efs-sc
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -83,7 +81,7 @@ jobs:
           https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/master/examples/kubernetes/dynamic_provisioning/specs/storageclass.yaml
           kubectl delete deployment efs-csi-controller -n kube-system || echo "Creating the deployment..."
           kubectl delete daemonset efs-csi-node -n kube-system || echo "Creating the daemonset..."
-          yq -i e '.metadata.name  |= env(STORAGE_CLASS_NAME)' storageclass.yaml
+          yq -i e '.metadata.name  |= "bahmni-efs-sc"' storageclass.yaml
           yq -i e '.parameters.fileSystemId  |= env(fileSystemId)' storageclass.yaml 
           kubectl apply -f public-ecr-driver.yaml
           kubectl apply -f storageclass.yaml
