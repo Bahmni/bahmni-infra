@@ -36,7 +36,7 @@ jobs:
           aws eks update-nodegroup-config  \
           --cluster-name=bahmni-cluster-${{ env.ENVIRONMENT }}  \
           --nodegroup-name=node-group-${{ env.ENVIRONMENT }}  \
-          --scaling-config minSize=1,maxSize=1,desiredSize=1 > /dev/null 2>&1
+          --scaling-config minSize=1,maxSize=2,desiredSize=2 > /dev/null 2>&1
 
       - name: Post Deployment Status To Slack
         run: |
