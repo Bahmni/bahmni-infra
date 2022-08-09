@@ -1,0 +1,43 @@
+name: Deploy Node Groups
+
+on:
+  workflow_run:
+    workflows:
+      - Validate and Deploy to AWS
+    types:
+      - completed
+  workflow_dispatch:
+    inputs:
+      nodeGroupName:
+        description: 'Name of the node group'
+        required: true
+        default: 'nonprod'
+        type: choice
+        options:
+          - nonprod
+          - performance
+jobs:
+  provision-node-group:
+    name: Provision Node Group
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    env:
+      NODE_GROUP_NAME: ${{ github.event.inputs.nodeGroupName || 'nonprod' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.BAHMNI_AWS_ID }}
+          aws-secret-access-key: ${{ secrets.BAHMNI_AWS_SECRET }}
+          aws-region: ap-south-1
+          role-to-assume: ${{ secrets.BAHMNI_INFRA_ADMIN_ROLE }}
+          role-duration-seconds: 1200  # 20 mins
+          role-session-name: BahmniInfraAdminSession
+      - name: Provision ${{ env.NODE_GROUP_NAME }} node group
+        run: |
+          cd terraform/node_groups/${{ env.NODE_GROUP_NAME }}
+          terraform init -backend-config=../../config.s3.tfbackend
+          terraform apply -auto-approve
+

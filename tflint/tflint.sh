@@ -26,3 +26,7 @@ run_scan(){
 }
 
 run_scan terraform/
+for folder in terraform/node_groups/*
+do
+    run_scan $folder
+done;

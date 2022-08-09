@@ -24,3 +24,7 @@ run_validate(){
 }
 
 run_validate terraform/
+for folder in terraform/node_groups/*
+do
+    run_validate $folder
+done;
