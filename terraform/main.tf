@@ -28,25 +28,20 @@ module "vpc" {
 }
 
 module "efs" {
-  source                   = "./modules/efs"
-  depends_on               = [module.vpc]
-  environment              = var.environment
-  vpc_suffix               = var.vpc_suffix
-  private_cidr_blocks      = var.private_cidr_blocks
+  source              = "./modules/efs"
+  depends_on          = [module.vpc]
+  environment         = var.environment
+  vpc_suffix          = var.vpc_suffix
+  private_cidr_blocks = var.private_cidr_blocks
 }
 
 module "eks" {
-  source               = "./modules/eks"
-  depends_on           = [module.vpc]
-  environment          = var.environment
-  owner                = var.owner
-  vpc_suffix           = var.vpc_suffix
-  ami_name             = var.ami_name
-  desired_num_of_nodes = var.desired_num_of_nodes
-  max_num_of_nodes     = var.max_num_of_nodes
-  min_num_of_nodes     = var.min_num_of_nodes
-  node_instance_type   = var.node_instance_type
-  efs_file_system_arn  = module.efs.efs-file-system-arn
+  source              = "./modules/eks"
+  depends_on          = [module.vpc]
+  environment         = var.environment
+  owner               = var.owner
+  vpc_suffix          = var.vpc_suffix
+  efs_file_system_arn = module.efs.efs-file-system-arn
 }
 
 module "rds" {

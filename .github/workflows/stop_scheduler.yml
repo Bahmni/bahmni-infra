@@ -26,7 +26,7 @@ jobs:
         run: |
           aws eks update-nodegroup-config  \
           --cluster-name=bahmni-cluster-${{ env.ENVIRONMENT }}  \
-          --nodegroup-name=node-group-${{ env.ENVIRONMENT }}  \
+          --nodegroup-name=${{ env.ENVIRONMENT }}  \
           --scaling-config minSize=0,maxSize=2,desiredSize=0  > /dev/null 2>&1
 
       - name: Stop ${{ env.ENVIRONMENT }} RDS Instance

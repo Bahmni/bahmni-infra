@@ -1,13 +1,3 @@
-data "aws_ami" "aws-linux" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = [var.ami_name]
-  }
-}
-
 data "aws_vpc" "bahmni-vpc" {
   filter {
     name   = "tag:Name"
@@ -62,7 +52,7 @@ data "aws_iam_policy_document" "efs-csi-driver-policy" {
     condition {
       test     = "StringLike"
       variable = "aws:RequestTag/efs.csi.aws.com/cluster"
-      values = ["true"]
+      values   = ["true"]
     }
   }
 
@@ -78,7 +68,7 @@ data "aws_iam_policy_document" "efs-csi-driver-policy" {
     condition {
       test     = "StringEquals"
       variable = "aws:ResourceTag/efs.csi.aws.com/cluster"
-      values = ["true"]
+      values   = ["true"]
     }
   }
 }
