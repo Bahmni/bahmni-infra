@@ -13,7 +13,7 @@ terraform {
   }
 
   backend "s3" {
-    key = "nodegroup/nonprod/terraform.tfstate"
+    key = "nodegroup/performance/terraform.tfstate"
   }
 }
 
