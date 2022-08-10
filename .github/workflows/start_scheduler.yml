@@ -7,11 +7,11 @@ on:
     - cron: '30 03 * * 1-5'
 
 jobs:
-  start-resources:
-    name: Start EKS nodegroup & RDS
+  start-rds:
+    name: Start RDS
     runs-on: ubuntu-latest
     env:
-      ENVIRONMENT: nonprod
+      RDS_NAME: bahmni-rds-nonprod
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -23,24 +23,44 @@ jobs:
           role-duration-seconds: 1200  # 20 mins
           role-session-name: BahmniInfraAdminSession
 
-      - name: Start ${{ env.ENVIRONMENT }} RDS Instance
+      - name: Start ${{ env.RDS_NAME }} RDS Instance
         run: |
-          aws rds start-db-instance --db-instance-identifier bahmni-rds-${{ env.ENVIRONMENT }} > /dev/null 2>&1
+          aws rds start-db-instance --db-instance-identifier ${{ env.RDS_NAME }} > /dev/null 2>&1
 
       - name: Wait 5 mins for RDS to start
         run: sleep 300s
         shell: bash
 
-      - name: Start EKS Node for ${{ env.ENVIRONMENT }} Cluster
+  start-nodegroups:
+    name: Start Node Group
+    runs-on: ubuntu-latest
+    needs: start-rds
+    strategy:
+      matrix:
+        nodegroup: [
+          { name: 'nonprod',minSize: 1,maxSize: 2,desiredSize: 2 },
+          { name: 'performance',minSize: 1,maxSize: 1,desiredSize: 1 }
+        ]
+    env:
+      CLUSTER_NAME: bahmni-cluster-nonprod
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.BAHMNI_AWS_ID }}
+          aws-secret-access-key: ${{ secrets.BAHMNI_AWS_SECRET }}
+          aws-region: ap-south-1
+          role-to-assume: ${{ secrets.BAHMNI_INFRA_ADMIN_ROLE }}
+          role-duration-seconds: 1200  # 20 mins
+          role-session-name: BahmniInfraAdminSession
+
+      - name: Start ${{ matrix.nodegroup.name }} Node Group
         run: |
           aws eks update-nodegroup-config  \
-          --cluster-name=bahmni-cluster-${{ env.ENVIRONMENT }}  \
-          --nodegroup-name=${{ env.ENVIRONMENT }}  \
-          --scaling-config minSize=1,maxSize=2,desiredSize=2 > /dev/null 2>&1
+          --cluster-name=${{ env.CLUSTER_NAME }}  \
+          --nodegroup-name=${{ matrix.nodegroup.name }}  \
+          --scaling-config minSize=${{ matrix.nodegroup.minSize }},maxSize=${{ matrix.nodegroup.maxSize }},desiredSize=${{ matrix.nodegroup.desiredSize }} > /dev/null 2>&1
 
       - name: Post Deployment Status To Slack
         run: |
           curl -X POST -H 'Content-type: application/json' --data '{"text":":white_check_mark:  Hello, EKS Node Group & RDS Instance started & will be available in 5 minutes"}' ${{ secrets.SLACK_WEBHOOK_URL }}
-
-
-
