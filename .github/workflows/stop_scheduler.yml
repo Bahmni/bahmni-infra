@@ -55,6 +55,14 @@ jobs:
       - name: Start ${{ env.RDS_NAME }} RDS Instance
         run: |
           aws rds stop-db-instance --db-instance-identifier ${{ env.RDS_NAME }} > /dev/null 2>&1
+
+  post-notification:
+    name: Post Slack Notification
+    needs: stop-rds
+    runs-on: ubuntu-latest
+    env:
+      RDS_NAME: bahmni-rds-nonprod
+    steps:
       - name: Post Deployment Status To Slack
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":":white_check_mark:  Hello, EKS Node Group & RDS Instance stopped for the day"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+          curl -X POST -H 'Content-type: application/json' --data '{"text":":white_check_mark:  Hello, EKS Node Groups & RDS Instance stopped for the day"}' ${{ secrets.SLACK_WEBHOOK_URL }}
