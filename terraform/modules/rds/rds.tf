@@ -7,16 +7,6 @@ resource "aws_db_subnet_group" "mysql-subnet" {
   }
 }
 
-resource "aws_db_parameter_group" "custom_mysql_parameters" {
-  name   = "mysql-custom-parameter-group-${var.environment}"
-  family = "mysql5.7"
-  parameter {
-    name         = "log_bin_trust_function_creators"
-    value        = 1
-    apply_method = "immediate"
-  }
-}
-
 resource "aws_db_instance" "mysql" {
   identifier              = "bahmni-rds-${var.environment}"
   allocated_storage       = 10
