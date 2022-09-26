@@ -1,5 +1,5 @@
 #!/bin/bash
-export TFLINT_LOG=debug tflint
+export TFLINT_LOG=debug
 set -e
 REL_SCRIPT_DIR="`dirname \"$0\"`"
 SCRIPT_DIR="`( cd \"$REL_SCRIPT_DIR\" && pwd)`"

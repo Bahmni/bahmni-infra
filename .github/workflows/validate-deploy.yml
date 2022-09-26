@@ -13,10 +13,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Add homebrew to path
-        run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+      # - name: Add homebrew to path
+      #   run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
       - name: Install Terrascan
-        run: brew install terrascan
+        run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew install terrascan
       - name: Terrascan scan and validate
         run: ./terrascan/terrascan.sh
   
@@ -37,10 +37,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Add homebrew to path
-        run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+      # - name: Add homebrew to path
+      #   run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
       - name: Install TFSec
-        run: brew install tfsec
+        run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew install tfsec
       - name: TFSec
         run: ./tfsec/tfsec.sh
 
