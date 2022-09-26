@@ -2,7 +2,7 @@ name: Validate and Deploy to AWS
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, BAH-2366 ]
     paths-ignore:
       - 'README.md'
 
@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Add homebrew to path
+        run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
       - name: Install Terrascan
         run: brew install terrascan
       - name: Terrascan scan and validate
@@ -28,12 +30,15 @@ jobs:
         uses: terraform-linters/setup-tflint@v1
       - name: TFLint
         run: ./tflint/tflint.sh
+        
   tfsec:
     name: TFSec
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - name: Add homebrew to path
+        run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
       - name: Install TFSec
         run: brew install tfsec
       - name: TFSec
