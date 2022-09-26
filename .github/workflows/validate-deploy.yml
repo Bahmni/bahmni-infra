@@ -46,7 +46,10 @@ jobs:
         with:
           terraform_version: ${{env.TERRAFORM_VERSION}}
       - name: Install TFSec
-        run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew install tfsec
+        run: |
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" 
+          brew install tfsec
+          tfsec --version
       - name: TFSec
         run: ./tfsec/tfsec.sh
 
