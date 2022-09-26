@@ -74,6 +74,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: ${{env.TERRAFORM_VERSION}}
+          terraform_wrapper: false
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -88,9 +89,7 @@ jobs:
           cd terraform/
           terraform init -backend-config=config.s3.tfbackend -backend-config='key=nonprod/terraform.tfstate'
           terraform apply -var-file=nonprod.tfvars -auto-approve 
-          export CLUSTER_NAME=$(terraform output eks_cluster_name) && echo "printed cluster name here"
-          echo $CLUSTER_NAME && echo "checked env variable set or not"
-          echo "CLUSTER_NAME=$CLUSTER_NAME" >> $GITHUB_ENV && echo "error step"
+          echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> $GITHUB_ENV 
       - name: Setup Amazon EFS driver and StorageClass
         run: |
           export fileSystemId=$(aws ssm get-parameter --with-decryption --name "/nonprod/efs/file_system_id" --query "Parameter.Value" --output text)
