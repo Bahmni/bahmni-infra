@@ -2,7 +2,7 @@ name: Validate and Deploy to AWS
 
 on:
   push:
-    branches: [ main, BAH-2336 ]
+    branches: [ main, BAH-2366 ]
     paths-ignore:
       - 'README.md'
 env:
@@ -88,7 +88,9 @@ jobs:
           cd terraform/
           terraform init -backend-config=config.s3.tfbackend -backend-config='key=nonprod/terraform.tfstate'
           terraform apply -var-file=nonprod.tfvars -auto-approve 
-          echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> $GITHUB_ENV
+          export CLUSTER_NAME=$(terraform output eks_cluster_name) && echo "printed cluster name here"
+          echo $CLUSTER_NAME && echo "checked env variable set or not"
+          echo "CLUSTER_NAME=$CLUSTER_NAME" >> $GITHUB_ENV && echo "error step"
       - name: Setup Amazon EFS driver and StorageClass
         run: |
           export fileSystemId=$(aws ssm get-parameter --with-decryption --name "/nonprod/efs/file_system_id" --query "Parameter.Value" --output text)
