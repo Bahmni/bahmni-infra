@@ -6,4 +6,4 @@ exclude:
   - aws-vpc-no-public-egress-sgr              # External access by instances to the internet
   - aws-vpc-no-public-ingress-sgr             # Public access from anywhere to bastion host
   - aws-iam-enforce-mfa
-  - map_public_ip_on_launch                   # Subnet associates public IP address
+  - aws-ec2-no-public-ip-subnet                  # Subnet associates public IP address
