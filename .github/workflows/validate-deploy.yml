@@ -50,8 +50,9 @@ jobs:
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" 
           brew install tfsec
           tfsec --version
-      - name: TFSec
-        run: ./tfsec/tfsec.sh
+          ./tfsec/tfsec.sh
+      # - name: TFSec
+      #   run: ./tfsec/tfsec.sh
 
   tfvalidate:
     name: Terraform Validate
