@@ -5,7 +5,8 @@ on:
     branches: [ main, BAH-2366 ]
     paths-ignore:
       - 'README.md'
-
+env:
+  TERRAFORM_VERSION: 1.2.8
 jobs:
   terrascan:
     name: Terrascan
@@ -13,8 +14,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      # - name: Add homebrew to path
-      #   run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{env.TERRAFORM_VERSION}}
       - name: Install Terrascan
         run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew install terrascan
       - name: Terrascan scan and validate
@@ -26,6 +28,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{env.TERRAFORM_VERSION}}
       - name: Setup TFLint
         uses: terraform-linters/setup-tflint@v2.0.1
       - name: TFLint
@@ -37,8 +42,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      # - name: Add homebrew to path
-      #   run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{env.TERRAFORM_VERSION}}
       - name: Install TFSec
         run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew install tfsec
       - name: TFSec
@@ -61,6 +67,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{env.TERRAFORM_VERSION}}
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
