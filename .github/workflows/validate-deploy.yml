@@ -2,7 +2,7 @@ name: Validate and Deploy to AWS
 
 on:
   push:
-    branches: [ main, BAH-2366 ]
+    branches: [ main ]
     paths-ignore:
       - 'README.md'
 env:
@@ -45,14 +45,11 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: ${{env.TERRAFORM_VERSION}}
-      - name: Install TFSec
+      - name: Install tfsec and scan
         run: |
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" 
           brew install tfsec
-          tfsec --version
           ./tfsec/tfsec.sh
-      # - name: TFSec
-      #   run: ./tfsec/tfsec.sh
 
   tfvalidate:
     name: Terraform Validate
