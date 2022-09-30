@@ -43,11 +43,10 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: ${{env.TERRAFORM_VERSION}}
-      - name: Install tfsec and scan
-        run: |
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" 
-          brew install tfsec
-          ./tfsec/tfsec.sh
+      - name: Install tfsec
+        run: curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+      - name: tfsec
+        run: ./tfsec/tfsec.sh
 
   tfvalidate:
     name: Terraform Validate
