@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Terrascan scan and save output to scan_results
-scan_results="$(terrascan scan --config-path terrascan/terrascan-config.yaml --iac-type terraform --use-colors t)"
+scan_results="$(docker run -v `pwd`:`pwd` -w `pwd` accurics/terrascan scan --config-path terrascan/terrascan-config.yaml --iac-type terraform --use-colors t)"
 
 # Get scan summary from scan_results
 scan_summary=$(echo "$scan_results" | sed -n -e '/Scan Summary -/,$p' | sed -r "s/[[:cntrl:]]\[([0-9]{1,3};)*[0-9]{1,3}m//g")

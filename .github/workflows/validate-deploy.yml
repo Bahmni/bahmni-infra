@@ -17,8 +17,6 @@ jobs:
       - uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: ${{env.TERRAFORM_VERSION}}
-      - name: Install Terrascan
-        run: eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" && brew install terrascan
       - name: Terrascan scan and validate
         run: ./terrascan/terrascan.sh
   
