@@ -5,7 +5,8 @@ on:
     branches: [ main ]
     paths-ignore:
       - 'README.md'
-
+env:
+  TERRAFORM_VERSION: 1.3.0
 jobs:
   terrascan:
     name: Terrascan
@@ -13,8 +14,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Install Terrascan
-        run: brew install terrascan
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{env.TERRAFORM_VERSION}}
       - name: Terrascan scan and validate
         run: ./terrascan/terrascan.sh
   
@@ -24,19 +26,26 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Setup TFLint
-        uses: terraform-linters/setup-tflint@v1
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{env.TERRAFORM_VERSION}}
+      - name: Install TFLint
+        run: curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
       - name: TFLint
         run: ./tflint/tflint.sh
+        
   tfsec:
     name: TFSec
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      - name: Install TFSec
-        run: brew install tfsec
-      - name: TFSec
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{env.TERRAFORM_VERSION}}
+      - name: Install tfsec
+        run: curl -s https://raw.githubusercontent.com/aquasecurity/tfsec/master/scripts/install_linux.sh | bash
+      - name: tfsec
         run: ./tfsec/tfsec.sh
 
   tfvalidate:
@@ -45,6 +54,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{env.TERRAFORM_VERSION}} 
       - name: Terraform Validate
         run: ./terraform/tf-validate.sh
 
@@ -56,6 +68,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+      - uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{env.TERRAFORM_VERSION}}
+          terraform_wrapper: false
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -70,7 +86,7 @@ jobs:
           cd terraform/
           terraform init -backend-config=config.s3.tfbackend -backend-config='key=nonprod/terraform.tfstate'
           terraform apply -var-file=nonprod.tfvars -auto-approve 
-          echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> $GITHUB_ENV
+          echo "CLUSTER_NAME=$(terraform output -raw eks_cluster_name)" >> $GITHUB_ENV 
       - name: Setup Amazon EFS driver and StorageClass
         run: |
           export fileSystemId=$(aws ssm get-parameter --with-decryption --name "/nonprod/efs/file_system_id" --query "Parameter.Value" --output text)
