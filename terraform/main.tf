@@ -55,10 +55,11 @@ module "rds" {
 }
 
 module "ses" {
-  source             = "./modules/ses"
-  depends_on         = [module.vpc]
-  domain_name        = var.domain_name
-  zone_id            =  var.hosted_zone_id
+  source               = "./modules/ses"
+  depends_on           = [module.vpc]
+  domain_name          = var.domain_name
+  zone_id              =  var.hosted_zone_id
+  email_subdomain_name = var.email_subdomain_name
 }
 
 
