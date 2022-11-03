@@ -58,8 +58,8 @@ module "ses" {
   source               = "./modules/ses"
   depends_on           = [module.vpc]
   domain_name          = var.domain_name
-  zone_id              =  var.hosted_zone_id
-  email_subdomain_name = var.email_subdomain_name
+  zone_id              = var.hosted_zone_id
+  ses_domain_identity_arn = module.ses.ses_domain_identity_arn
 }
 
 

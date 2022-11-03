@@ -8,7 +8,8 @@ variable "zone_id" {
   description = "Route 53 Hosted Zone ID for the domain_name"
 }
 
-variable "email_subdomain_name" {
+variable "ses_domain_identity_arn" {
   type        = string
-  description = "Subdomain name for email"
+  description = "SES Domian Identity ARN"
+  sensitive   = true
 }
