@@ -6,7 +6,7 @@ data "aws_iam_policy_document" "ses_send_email_access_policy" {
     ]
 
     resources = [
-      var.ses_domain_identity_arn
+      aws_ses_domain_identity.master_email_domain.arn
     ]
   }
 }
