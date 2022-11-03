@@ -57,3 +57,13 @@ variable "bastion_public_access_cidr" {
   type        = string
   description = "CIDR Block used for SSH Access of Bastion Host"
 }
+
+variable "domain_name" {
+  type        = string
+  description = "Domain Name for Amazon SES service"
+}
+
+variable "hosted_zone_id" {
+  type        = string
+  description = "Route 53 Hosted Zone ID for the domain_name"
+}
