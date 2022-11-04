@@ -2,9 +2,6 @@ name: Start Performance Instance in AWS
 
 on:
   workflow_dispatch:
-  schedule:
-    # Runs "At 09:00 AM on every day-of-week from Monday through Friday. Below time is mentioned in UTC time zone" (see https://crontab.guru)
-    - cron: '30 03 * * 1-5'
 
 jobs:
   start-instance:

@@ -1,10 +1,7 @@
-name: Start EKS Node Group & RDS in AWS
+name: Stop Performance Instance in AWS
 
 on:
   workflow_dispatch:
-  schedule:
-    # Runs "At 08:00 PM on every day-of-week from Monday through Friday. Below time is mentioned in UTC time zone" (see https://crontab.guru)
-    - cron: '30 14 * * 1-5'
 
 jobs:
   stop-instance:
@@ -26,7 +23,7 @@ jobs:
           aws ec2 stop-instances --instance-ids \
           $(aws ec2 describe-instances --filters "Name=tag:Name,Values=performance-EC2" --query "Reservations[].Instances[].InstanceId" --output text) \
 
-      - name: Wait  for 1 minute for the instance to start
+      - name: Wait  for 1 minute for the instance to stop
         run: sleep 60s
         shell: bash
 
