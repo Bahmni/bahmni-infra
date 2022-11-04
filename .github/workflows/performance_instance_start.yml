@@ -1,4 +1,4 @@
-name: Start EKS Node Group & RDS in AWS
+name: Start Performance Instance in AWS
 
 on:
   workflow_dispatch:
@@ -7,8 +7,8 @@ on:
     - cron: '30 03 * * 1-5'
 
 jobs:
-  stop-instance:
-    name: Stop Performance Instance
+  start-instance:
+    name: Start Performance Instance
     runs-on: ubuntu-latest
     steps:
       - name: Configure AWS Credentials
@@ -21,20 +21,19 @@ jobs:
           role-duration-seconds: 1200  # 20 mins
           role-session-name: BahmniInfraAdminSession
 
-      - name: Stop Instance
+      - name: Start Instance
         run: |
-          aws ec2 stop-instances --instance-ids \
-          $(aws ec2 describe-instances --filters "Name=tag:Name,Values=performance-EC2" --query "Reservations[].Instances[].InstanceId" --output text) \
-
-      - name: Wait  for 1 minute for the instance to start
+          aws ec2 start-instances --instance-ids \
+          $(aws ec2 describe-instances --filters "Name=tag:Name,Values=performance-EC2" --query "Reservations[].Instances[].InstanceId" --output text)
+      - name: Wait  for 1 minute for the instance to stop
         run: sleep 60s
         shell: bash
 
   post-notification:
     name: Post Slack Notification
     runs-on: ubuntu-latest
-    needs: stop-instance
+    needs: start-instance
     steps:
       - name: Post Deployment Status To Slack
         run: |
-          curl -X POST -H 'Content-type: application/json' --data '{"text":":white_check_mark:  Hello, Performance Instance Stopped"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+          curl -X POST -H 'Content-type: application/json' --data '{"text":":white_check_mark:  Hello, Performance Instance Started"}' ${{ secrets.SLACK_WEBHOOK_URL }}
