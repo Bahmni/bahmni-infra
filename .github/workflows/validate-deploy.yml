@@ -93,8 +93,6 @@ jobs:
           aws eks update-kubeconfig --name $CLUSTER_NAME
           kubectl kustomize \
           "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.4" > public-ecr-driver.yaml
-          sed -i.bak -e 's|us-west-2|ap-south-1|' private-ecr-driver.yaml
-          sed -i.bak -e 's|602401143452|863324974761|' private-ecr-driver.yaml
           curl -o storageclass.yaml \
           https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/master/examples/kubernetes/dynamic_provisioning/specs/storageclass.yaml
           kubectl delete deployment efs-csi-controller -n kube-system || echo "Creating the deployment..."
