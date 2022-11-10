@@ -10,3 +10,5 @@ mysql_version              = "5.7"
 mysql_rds_port             = "3306"
 enable_bastion_host        = false
 bastion_public_access_cidr = "0.0.0.0/0"
+domain_name                = "mybahmni.in"
+hosted_zone_id             = "Z08282853KUE36WP4UDPI"

@@ -175,7 +175,9 @@
           "Effect": "Allow",
           "Action": [
               "route53:ChangeResourceRecordSets",
-              "route53:ListResourceRecordSets"
+              "route53:ListResourceRecordSets",
+              "route53:GetHostedZone",
+              "route53:GetChange"
           ],
           "Resource": "*"
       },
@@ -191,6 +193,18 @@
               "elasticfilesystem:DescribeMountTargets",
               "elasticfilesystem:DescribeMountTargetSecurityGroups",
               "elasticfilesystem:DeleteMountTarget"
+          ],
+          "Resource": "*"
+      },
+      {
+          "Sid": "SES",
+          "Effect": "Allow",
+          "Action": [
+              "ses:VerifyDomainIdentity",
+              "ses:GetIdentityVerificationAttributes",
+              "ses:VerifyDomainDkim",
+              "ses:GetIdentityDkimAttributes",
+              "ses:DeleteIdentity"
           ],
           "Resource": "*"
       }
