@@ -56,6 +56,7 @@ module "rds" {
 
 module "ses" {
   source               = "./modules/ses"
+  count                = var.enable_ses ? 1 : 0
   depends_on           = [module.vpc]
   domain_name          = var.domain_name
   zone_id              = var.hosted_zone_id

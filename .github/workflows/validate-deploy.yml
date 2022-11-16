@@ -82,6 +82,9 @@ jobs:
           role-duration-seconds: 1200  # 20 mins
           role-session-name: BahmniInfraAdminSession
       - name: Provision resources for nonprod
+        env:
+          TF_VAR_hosted_zone_id: Z08282853KUE36WP4UDPI
+          TF_VAR_domain_name: mybahmni.in
         run: |
           cd terraform/
           terraform init -backend-config=config.s3.tfbackend -backend-config='key=nonprod/terraform.tfstate'

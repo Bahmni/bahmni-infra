@@ -67,3 +67,9 @@ variable "hosted_zone_id" {
   type        = string
   description = "Route 53 Hosted Zone ID for the domain_name"
 }
+
+variable "enable_ses" {
+  type        = bool
+  default     = false
+  description = "Toggle for SES Module"
+}
