@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   schedule:
     # Runs "At 09:00 PM on every day. Below time is mentioned in UTC time zone" (see https://crontab.guru)
-    - cron: '30 15 * * 1-7'
+    - cron: '30 15 * * *'
 
 jobs:
   stop-nodegroup:
