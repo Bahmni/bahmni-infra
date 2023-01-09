@@ -2,7 +2,7 @@ name: Validate and Deploy to AWS
 
 on:
   push:
-    branches: [ main, BAH-2497 ]
+    branches: [ main ]
     paths-ignore:
       - 'README.md'
 env:
