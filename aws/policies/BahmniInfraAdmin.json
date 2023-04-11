@@ -119,7 +119,8 @@
               "rds:CreateDBParameterGroup",
               "rds:ModifyDBParameterGroup",
               "rds:DeleteDBParameterGroup",
-              "rds:DescribeDBParameters"
+              "rds:DescribeDBParameters",
+              "rds:ResetDBParameterGroup"
           ],
           "Resource": "*",
           "Condition": {
