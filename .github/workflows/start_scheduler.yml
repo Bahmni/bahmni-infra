@@ -38,8 +38,8 @@ jobs:
     strategy:
       matrix:
         nodegroup: [
-          { name: 'nonprod',minSize: 1,maxSize: 2,desiredSize: 2 },
-          { name: 'performance',minSize: 1,maxSize: 1,desiredSize: 1 }
+          { name: 'nonprod',minSize: 1,maxSize: 2,desiredSize: 1 },
+          { name: 'performance',minSize: 0,maxSize: 1,desiredSize: 0 }
         ]
     env:
       CLUSTER_NAME: bahmni-cluster-nonprod
