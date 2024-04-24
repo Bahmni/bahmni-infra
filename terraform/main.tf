@@ -52,14 +52,15 @@ module "rds" {
   mysql_rds_port     = var.mysql_rds_port
   mysql_version      = var.mysql_version
   rds_instance_class = var.rds_instance_class
+  mysql_time_zone    = var.mysql_time_zone
 }
 
 module "ses" {
-  source               = "./modules/ses"
-  count                = var.enable_ses ? 1 : 0
-  depends_on           = [module.vpc]
-  domain_name          = var.domain_name
-  zone_id              = var.hosted_zone_id
+  source      = "./modules/ses"
+  count       = var.enable_ses ? 1 : 0
+  depends_on  = [module.vpc]
+  domain_name = var.domain_name
+  zone_id     = var.hosted_zone_id
 }
 
 module "bastion" {

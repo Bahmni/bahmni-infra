@@ -17,4 +17,9 @@ resource "aws_db_parameter_group" "custom_mysql_parameters" {
     name  = "collation_server"
     value = "utf8_general_ci"
   }
+
+  parameter {
+    name  = "time_zone"
+    value = var.mysql_time_zone
+  }
 }

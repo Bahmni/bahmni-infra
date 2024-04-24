@@ -8,6 +8,7 @@ vpc_cidr_block             = "10.0.0.0/16"
 rds_instance_class         = "db.t3.large"
 mysql_version              = "5.7"
 mysql_rds_port             = "3306"
+mysql_time_zone            = "Asia/Calcutta"
 enable_bastion_host        = false
 bastion_public_access_cidr = "0.0.0.0/0"
 enable_ses                 = true

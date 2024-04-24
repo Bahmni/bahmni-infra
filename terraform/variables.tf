@@ -48,6 +48,11 @@ variable "mysql_rds_port" {
   description = "RDS Port for MySQL Instance"
 }
 
+variable "mysql_time_zone" {
+  type        = string
+  description = "Time Zone for RDS Instance"
+}
+
 variable "enable_bastion_host" {
   type        = bool
   description = "Toggle for Bastion Host"

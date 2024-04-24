@@ -22,3 +22,8 @@ variable "rds_instance_class" {
   type        = string
   description = "Instance class for RDS Instance"
 }
+
+variable "mysql_time_zone" {
+  type        = string
+  description = "Time Zone for RDS Instance"
+}
