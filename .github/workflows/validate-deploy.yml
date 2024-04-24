@@ -97,7 +97,7 @@ jobs:
           kubectl kustomize \
           "github.com/kubernetes-sigs/aws-efs-csi-driver/deploy/kubernetes/overlays/stable/?ref=release-1.5" > public-ecr-driver.yaml
           curl -o storageclass.yaml \
-          https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/master/examples/kubernetes/dynamic_provisioning/specs/storageclass.yaml
+          https://raw.githubusercontent.com/kubernetes-sigs/aws-efs-csi-driver/v1.6.0/examples/kubernetes/dynamic_provisioning/specs/storageclass.yaml
           kubectl delete deployment efs-csi-controller -n kube-system || echo "Creating the deployment..."
           kubectl delete daemonset efs-csi-node -n kube-system || echo "Creating the daemonset..."
           yq -i e '.metadata.name  |= "bahmni-efs-sc"' storageclass.yaml
