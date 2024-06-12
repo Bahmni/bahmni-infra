@@ -8,23 +8,24 @@ resource "aws_db_subnet_group" "mysql-subnet" {
 }
 
 resource "aws_db_instance" "mysql" {
-  identifier              = "bahmni-rds-${var.environment}"
-  allocated_storage       = 10
-  max_allocated_storage   = 30
-  skip_final_snapshot     = true
-  engine                  = "mysql"
-  engine_version          = var.mysql_version
-  instance_class          = var.rds_instance_class
-  username                = random_string.mysql_user_name.result
-  password                = random_string.mysql_user_password.result
-  vpc_security_group_ids  = [aws_security_group.rds.id]
-  storage_encrypted       = true
-  db_subnet_group_name    = aws_db_subnet_group.mysql-subnet.name
-  publicly_accessible     = false
-  apply_immediately       = true
-  port                    = var.mysql_rds_port
-  backup_retention_period = 2
-  parameter_group_name    = aws_db_parameter_group.custom_mysql_parameters.name
+  identifier                  = "bahmni-rds-${var.environment}"
+  allocated_storage           = 10
+  max_allocated_storage       = 30
+  skip_final_snapshot         = true
+  engine                      = "mysql"
+  engine_version              = var.mysql_version
+  instance_class              = var.rds_instance_class
+  username                    = random_string.mysql_user_name.result
+  password                    = random_string.mysql_user_password.result
+  vpc_security_group_ids      = [aws_security_group.rds.id]
+  storage_encrypted           = true
+  db_subnet_group_name        = aws_db_subnet_group.mysql-subnet.name
+  publicly_accessible         = false
+  apply_immediately           = true
+  allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  port                        = var.mysql_rds_port
+  backup_retention_period     = 2
+  parameter_group_name        = aws_db_parameter_group.custom_mysql_parameters.name
 }
 
 resource "random_string" "mysql_user_name" {

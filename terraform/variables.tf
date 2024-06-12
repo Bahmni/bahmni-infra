@@ -78,3 +78,9 @@ variable "enable_ses" {
   default     = false
   description = "Toggle for SES Module"
 }
+
+variable "rds_allow_major_version_upgrade" {
+  type        = bool
+  description = "Allow Major Version Upgrade for RDS Instance"
+
+}

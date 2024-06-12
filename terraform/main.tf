@@ -45,14 +45,15 @@ module "eks" {
 }
 
 module "rds" {
-  source             = "./modules/rds"
-  depends_on         = [module.vpc]
-  environment        = var.environment
-  vpc_suffix         = var.vpc_suffix
-  mysql_rds_port     = var.mysql_rds_port
-  mysql_version      = var.mysql_version
-  rds_instance_class = var.rds_instance_class
-  mysql_time_zone    = var.mysql_time_zone
+  source                          = "./modules/rds"
+  depends_on                      = [module.vpc]
+  environment                     = var.environment
+  vpc_suffix                      = var.vpc_suffix
+  mysql_rds_port                  = var.mysql_rds_port
+  mysql_version                   = var.mysql_version
+  rds_instance_class              = var.rds_instance_class
+  rds_allow_major_version_upgrade = var.rds_allow_major_version_upgrade
+  mysql_time_zone                 = var.mysql_time_zone
 }
 
 module "ses" {

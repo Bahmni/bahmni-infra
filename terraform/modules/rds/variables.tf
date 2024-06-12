@@ -27,3 +27,8 @@ variable "mysql_time_zone" {
   type        = string
   description = "Time Zone for RDS Instance"
 }
+
+variable "rds_allow_major_version_upgrade" {
+  type        = bool
+  description = "Allow Major Version Upgrade for RDS Instance"
+}
