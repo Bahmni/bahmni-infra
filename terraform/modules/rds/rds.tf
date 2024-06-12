@@ -25,7 +25,7 @@ resource "aws_db_instance" "mysql" {
   allow_major_version_upgrade = var.rds_allow_major_version_upgrade
   port                        = var.mysql_rds_port
   backup_retention_period     = 2
-  parameter_group_name        = aws_db_parameter_group.custom_mysql_parameters.name
+  parameter_group_name        = aws_db_parameter_group.custom_mysql8_0_parameters.name
 }
 
 resource "random_string" "mysql_user_name" {
