@@ -1,10 +1,6 @@
 resource "aws_db_parameter_group" "custom_mysql_parameters" {
   name   = "mysql-custom-parameter-group-${var.environment}"
-  family = "mysql8.0"
-
-  lifecycle {
-    create_before_destroy = true
-  }
+  family = "mysql5.7"
 
   parameter {
     name         = "log_bin_trust_function_creators"
