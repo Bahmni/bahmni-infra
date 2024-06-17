@@ -5,6 +5,7 @@ resource "aws_eks_node_group" "node_group" {
   subnet_ids      = data.aws_eks_cluster.eks_cluster.vpc_config[0].subnet_ids
   instance_types  = [var.node_instance_type]
   capacity_type   = "ON_DEMAND"
+  version         = data.aws_eks_cluster.eks_cluster.version
 
   scaling_config {
     desired_size = var.desired_num_of_nodes
