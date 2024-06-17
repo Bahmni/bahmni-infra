@@ -42,6 +42,7 @@ module "eks" {
   owner               = var.owner
   vpc_suffix          = var.vpc_suffix
   efs_file_system_arn = module.efs.efs-file-system-arn
+  eks_version         = var.eks_version
 }
 
 module "rds" {

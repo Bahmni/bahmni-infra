@@ -84,3 +84,8 @@ variable "rds_allow_major_version_upgrade" {
   description = "Allow Major Version Upgrade for RDS Instance"
 
 }
+
+variable "eks_version" {
+  type        = string
+  description = "EKS Cluster Version"
+}

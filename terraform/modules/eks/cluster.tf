@@ -17,5 +17,7 @@ resource "aws_eks_cluster" "bahmni-cluster" {
   tags = {
     owner = var.owner
   }
+
+  version = var.eks_version
 }
 

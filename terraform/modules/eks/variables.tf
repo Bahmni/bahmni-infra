@@ -18,3 +18,8 @@ variable "vpc_suffix" {
   type        = string
   description = "Suffix Value for VPC related resources (Ex: prod,nonprod)"
 }
+
+variable "eks_version" {
+  type        = string
+  description = "EKS Cluster Version"
+}
