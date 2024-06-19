@@ -13,4 +13,4 @@ mysql_time_zone                 = "Asia/Calcutta"
 enable_bastion_host             = false
 bastion_public_access_cidr      = "0.0.0.0/0"
 enable_ses                      = true
-eks_version                     = "1.26"
+eks_version                     = "1.27"
