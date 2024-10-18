@@ -3,8 +3,8 @@ name: Start EKS Node Group & RDS in AWS
 on:
   workflow_dispatch:
   schedule:
-    # Runs "At 06:00 AM on every day. Below time is mentioned in UTC time zone" (see https://crontab.guru)
-    - cron: '30 00 * * *'
+    # Runs "At 06:00 AM IST on Monday through Friday. Below time is mentioned in UTC time zone" (see https://crontab.guru)
+    - cron: '30 00 * * 1-5'
 
 jobs:
   start-rds:
