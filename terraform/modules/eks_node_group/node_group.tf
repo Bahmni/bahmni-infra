@@ -6,6 +6,7 @@ resource "aws_eks_node_group" "node_group" {
   instance_types  = [var.node_instance_type]
   capacity_type   = "ON_DEMAND"
   version         = data.aws_eks_cluster.eks_cluster.version
+  ami_type        = var.ami_type
 
   scaling_config {
     desired_size = var.desired_num_of_nodes
