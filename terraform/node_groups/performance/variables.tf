@@ -32,4 +32,9 @@ variable "node_instance_type" {
   description = "Type of Instance to be used for nodes"
 }
 
+variable "ami_type" {
+  type        = string
+  description = "Type of Amazon Machine Image (AMI) associated with the EKS Node Group"
+}
+
 

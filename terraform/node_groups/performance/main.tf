@@ -26,4 +26,5 @@ module "node_group" {
   min_num_of_nodes     = var.min_num_of_nodes
   node_instance_type   = var.node_instance_type
   node_role_name       = var.node_role_name
+  ami_type             = var.ami_type
 }

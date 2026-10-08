@@ -32,3 +32,9 @@ variable "node_role_name" {
   type        = string
   description = "Name of the IAM Role to add to nodes in node group"
 }
+
+variable "ami_type" {
+  type        = string
+  description = "Type of Amazon Machine Image (AMI) associated with the EKS Node Group."
+  default     = null
+}

@@ -5,3 +5,4 @@ desired_num_of_nodes = 0
 min_num_of_nodes     = 0
 max_num_of_nodes     = 1
 node_instance_type   = "m5.xlarge"
+ami_type             = "BOTTLEROCKET_x86_64"
